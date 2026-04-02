@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Outlet, Link, useLocation } from 'react-router-dom'
-import { Phone, Mail, MapPin, Globe, ExternalLink, Menu, X } from 'lucide-react'
+import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Menu, X } from 'lucide-react'
 import ChatWidget from '../components/ChatWidget'
 import './PublicLayout.css'
 
@@ -74,9 +74,10 @@ function PublicLayout() {
               </Link>
               <p>Protecting families and securing futures since 2015. We're committed to helping you find the right life insurance coverage for your unique needs.</p>
               <div className="social-links">
-                <a href="#" aria-label="Facebook"><Globe size={20} /></a>
-                <a href="#" aria-label="LinkedIn"><ExternalLink size={20} /></a>
-                <a href="#" aria-label="Twitter"><Globe size={20} /></a>
+                <a href="https://facebook.com/fulllifefinancial" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><Facebook size={20} /></a>
+                <a href="https://instagram.com/fulllifefinancial" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><Instagram size={20} /></a>
+                <a href="https://linkedin.com/company/fulllifefinancial" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Linkedin size={20} /></a>
+                <a href="mailto:info@fulllifefinancial.com" aria-label="Email"><Mail size={20} /></a>
               </div>
             </div>
 
