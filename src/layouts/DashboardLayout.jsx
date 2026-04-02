@@ -4,7 +4,7 @@ import {
   LayoutDashboard, Users, BarChart3,
   Target, Map, Trophy, FileText, LogOut, Bell, Search,
   TrendingUp, ClipboardList, ChevronDown, Settings, User,
-  DollarSign, UserPlus, Award, AlertCircle, Check, X
+  DollarSign, UserPlus, Award, AlertCircle, Check, X, Menu
 } from 'lucide-react'
 import { adminUser, agents } from '../data/mockData'
 import './DashboardLayout.css'
@@ -14,6 +14,7 @@ function DashboardLayout({ role }) {
   const navigate = useNavigate()
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
   const [notificationsOpen, setNotificationsOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const profileMenuRef = useRef(null)
   const notificationsRef = useRef(null)
 
@@ -122,8 +123,13 @@ function DashboardLayout({ role }) {
 
   return (
     <div className="dashboard-layout">
+      {/* Mobile Overlay */}
+      {sidebarOpen && (
+        <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />
+      )}
+
       {/* Sidebar */}
-      <aside className="sidebar">
+      <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
           <Link to="/" className="sidebar-logo">
             <img src="/logo.svg" alt="Full Life Financial" className="sidebar-logo-img" />
@@ -198,6 +204,13 @@ function DashboardLayout({ role }) {
           </div>
 
           <div className="header-actions">
+            <button
+              className="mobile-menu-btn"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              aria-label="Toggle menu"
+            >
+              <Menu size={24} />
+            </button>
             <div className="notifications-container" ref={notificationsRef}>
               <button
                 className={`header-btn ${notificationsOpen ? 'active' : ''}`}

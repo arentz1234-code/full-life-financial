@@ -969,7 +969,8 @@
   }
 
   .hero-image {
-    order: -1;
+    order: 1;
+    margin-top: 24px;
   }
 
   .hero-card {

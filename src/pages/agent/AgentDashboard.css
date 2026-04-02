@@ -3,18 +3,20 @@
 .agent-dashboard {
   animation: fadeIn 0.3s ease;
   max-width: 100%;
+  width: 100%;
   overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 /* Welcome Banner */
 .welcome-banner {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   border-radius: var(--radius-lg);
-  padding: 24px 32px;
+  padding: 16px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   color: var(--white);
 }
 
@@ -48,9 +50,9 @@
 .level-card {
   background: var(--white);
   border-radius: var(--radius-lg);
-  padding: 20px 24px;
+  padding: 14px 20px;
   box-shadow: var(--shadow-sm);
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .level-info {
@@ -115,16 +117,17 @@
 /* Stats Grid */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin-bottom: 24px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
 }
 
 .stat-card {
   background: var(--white);
   border-radius: var(--radius-lg);
-  padding: 20px;
+  padding: 16px;
   box-shadow: var(--shadow-sm);
+  min-width: 0;
 }
 
 .stat-header {
@@ -172,16 +175,16 @@
 /* Content Grid */
 .content-grid {
   display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 20px;
-  margin-bottom: 24px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 16px;
+  margin-bottom: 20px;
   min-width: 0;
 }
 
 .card {
   background: var(--white);
   border-radius: var(--radius-lg);
-  padding: 24px;
+  padding: 16px;
   box-shadow: var(--shadow-sm);
   min-width: 0;
   overflow: hidden;
