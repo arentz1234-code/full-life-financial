@@ -22,6 +22,7 @@ import AgentLeads from './pages/agent/Leads'
 import AgentSales from './pages/agent/Sales'
 import AgentMap from './pages/agent/Map'
 import AgentLeaderboard from './pages/agent/Leaderboard'
+import AgentApplications from './pages/agent/Applications'
 
 // Shared Pages
 import Profile from './pages/shared/Profile'
@@ -65,6 +66,7 @@ function App() {
           <Route path="sales" element={<AgentSales />} />
           <Route path="map" element={<AgentMap />} />
           <Route path="leaderboard" element={<AgentLeaderboard />} />
+          <Route path="applications" element={<AgentApplications />} />
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
         </Route>

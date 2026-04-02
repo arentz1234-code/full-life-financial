@@ -678,6 +678,16 @@ export const updatePolicyApplicationStatus = (id, status) => {
   );
 };
 
+export const assignPolicyApplicationAgent = (id, agentId) => {
+  policyApplicationsStore = policyApplicationsStore.map(app =>
+    app.id === id ? { ...app, assignedAgent: agentId } : app
+  );
+};
+
+export const getAgentPolicyApplications = (agentId) => {
+  return policyApplicationsStore.filter(app => app.assignedAgent === agentId);
+};
+
 // Job Applications (mock data for demo)
 export const applications = [
   {

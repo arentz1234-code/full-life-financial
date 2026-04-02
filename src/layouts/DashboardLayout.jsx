@@ -110,6 +110,7 @@ function DashboardLayout({ role }) {
 
   const agentNav = [
     { path: '/agent', icon: LayoutDashboard, label: 'Dashboard' },
+    { path: '/agent/applications', icon: ClipboardList, label: 'My Applications' },
     { path: '/agent/leads', icon: Target, label: 'Leads' },
     { path: '/agent/sales', icon: FileText, label: 'Sales' },
     { path: '/agent/map', icon: Map, label: 'Territory Map' },

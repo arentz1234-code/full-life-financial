@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Search, Download, Eye, Mail, Phone, Calendar, FileText, User, Shield, CheckCircle, Clock, AlertCircle, X, DollarSign } from 'lucide-react'
-import { getPolicyApplications, updatePolicyApplicationStatus, agents } from '../../data/mockData'
+import { getPolicyApplications, updatePolicyApplicationStatus, assignPolicyApplicationAgent, agents } from '../../data/mockData'
 import './AdminPolicyApplications.css'
 
 function PolicyApplications() {
@@ -45,6 +45,14 @@ function PolicyApplications() {
     setApplications(getPolicyApplications())
     if (selectedApp?.id === appId) {
       setSelectedApp({ ...selectedApp, status: newStatus })
+    }
+  }
+
+  const handleAgentAssign = (appId, agentId) => {
+    assignPolicyApplicationAgent(appId, agentId)
+    setApplications(getPolicyApplications())
+    if (selectedApp?.id === appId) {
+      setSelectedApp({ ...selectedApp, assignedAgent: agentId })
     }
   }
 
@@ -265,9 +273,20 @@ function PolicyApplications() {
                   <span className="policy-label">Smoker</span>
                   <span className="policy-value">{selectedApp.smoker ? 'Yes' : 'No'}</span>
                 </div>
-                <div className="policy-item">
+                <div className="policy-item full-width">
                   <span className="policy-label">Assigned Agent</span>
-                  <span className="policy-value">{getAgentName(selectedApp.assignedAgent)}</span>
+                  <select
+                    className="agent-select"
+                    value={selectedApp.assignedAgent || ''}
+                    onChange={(e) => handleAgentAssign(selectedApp.id, e.target.value)}
+                  >
+                    <option value="">-- Select Agent --</option>
+                    {agents.map(agent => (
+                      <option key={agent.id} value={agent.id}>
+                        {agent.name} ({agent.territory})
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
             </div>
