@@ -31,8 +31,8 @@
 }
 
 @keyframes scrollBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(8px); }
+  0%, 100% { transform: rotate(45deg) translateY(0); }
+  50% { transform: rotate(45deg) translateY(8px); }
 }
 
 @keyframes shimmer {
@@ -273,7 +273,6 @@
   height: 24px;
   border-right: 2px solid rgba(255, 255, 255, 0.6);
   border-bottom: 2px solid rgba(255, 255, 255, 0.6);
-  transform: rotate(45deg);
   animation: scrollBounce 2s infinite;
 }
 
