@@ -1,4 +1,4 @@
-import { DollarSign, Target, TrendingUp, Flame, Award, ArrowUp, Clock, CheckCircle, Briefcase, Gem, Zap, Crown, BookOpen, Rocket } from 'lucide-react'
+import { DollarSign, Target, TrendingUp, Flame, Award, ArrowUp, Clock, CheckCircle, Briefcase, Gem, Zap, Crown, BookOpen, Rocket, Phone, Calendar, FileText, Trophy, Mail } from 'lucide-react'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts'
 import { agents, leads, sales, getAgentStats, badges as badgeDefinitions, activities } from '../../data/mockData'
 import './AgentDashboard.css'
@@ -245,11 +245,11 @@ function AgentDashboard() {
             {agentActivities.slice(0, 5).map(activity => (
               <div key={activity.id} className="activity-item">
                 <div className={`activity-icon ${activity.type}`}>
-                  {activity.type === 'call' && '📞'}
-                  {activity.type === 'meeting' && '📅'}
-                  {activity.type === 'quote' && '📝'}
-                  {activity.type === 'close' && '🎉'}
-                  {activity.type === 'email' && '📧'}
+                  {activity.type === 'call' && <Phone size={18} />}
+                  {activity.type === 'meeting' && <Calendar size={18} />}
+                  {activity.type === 'quote' && <FileText size={18} />}
+                  {activity.type === 'close' && <Trophy size={18} />}
+                  {activity.type === 'email' && <Mail size={18} />}
                 </div>
                 <div className="activity-content">
                   <span className="activity-desc">{activity.description}</span>
