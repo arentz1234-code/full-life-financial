@@ -75,17 +75,19 @@
 /* Agents Grid */
 .agents-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
 }
 
 .agent-card {
   background: var(--white);
   border-radius: var(--radius-lg);
-  padding: 24px;
+  padding: 20px;
   box-shadow: var(--shadow-sm);
   cursor: pointer;
   transition: var(--transition);
+  min-width: 0;
+  overflow: hidden;
 }
 
 .agent-card:hover {
@@ -146,7 +148,7 @@
 .agent-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: 8px;
   padding: 16px 0;
   border-top: 1px solid var(--gray-100);
   border-bottom: 1px solid var(--gray-100);
@@ -155,18 +157,27 @@
 
 .agent-stats .stat-item {
   text-align: center;
+  padding: 10px 6px;
+  background: var(--gray-50);
+  border-radius: var(--radius);
+  min-width: 0;
+  overflow: hidden;
 }
 
 .agent-stats .stat-value {
   display: block;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--gray-900);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .agent-stats .stat-label {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--gray-500);
+  white-space: nowrap;
 }
 
 .agent-badges {
