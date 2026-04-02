@@ -153,16 +153,17 @@
   height: 44px;
   border-radius: var(--radius);
   border: none;
-  background: var(--gray-100);
-  color: var(--gray-700);
+  background: var(--primary);
+  color: var(--white);
   cursor: pointer;
   align-items: center;
   justify-content: center;
   transition: var(--transition);
+  margin-left: auto;
 }
 
 .mobile-menu-toggle:hover {
-  background: var(--gray-200);
+  background: var(--primary-dark);
 }
 
 .desktop-login {
