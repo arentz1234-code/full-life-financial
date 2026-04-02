@@ -562,6 +562,122 @@ export const getAllStats = () => {
   };
 };
 
+// Insurance Policy Applications (customer applications for life insurance)
+export const policyApplications = [
+  {
+    id: 'pol-001',
+    firstName: 'Robert',
+    lastName: 'Williams',
+    email: 'robert.w@email.com',
+    phone: '(205) 555-0123',
+    age: 42,
+    productType: 'Term Life - 20 Year',
+    coverageAmount: 500000,
+    monthlyBudget: 150,
+    healthStatus: 'good',
+    smoker: false,
+    assignedAgent: 'agent-001',
+    submittedAt: '2024-03-25T10:30:00',
+    status: 'pending',
+    notes: 'Has two kids, wants coverage until they finish college'
+  },
+  {
+    id: 'pol-002',
+    firstName: 'Michelle',
+    lastName: 'Davis',
+    email: 'michelle.d@email.com',
+    phone: '(404) 555-0187',
+    age: 35,
+    productType: 'Whole Life',
+    coverageAmount: 250000,
+    monthlyBudget: 280,
+    healthStatus: 'excellent',
+    smoker: false,
+    assignedAgent: 'agent-002',
+    submittedAt: '2024-03-24T14:15:00',
+    status: 'under_review',
+    notes: 'Looking for long-term investment + protection'
+  },
+  {
+    id: 'pol-003',
+    firstName: 'James',
+    lastName: 'Anderson',
+    email: 'james.a@email.com',
+    phone: '(305) 555-0156',
+    age: 55,
+    productType: 'Final Expense',
+    coverageAmount: 25000,
+    monthlyBudget: 75,
+    healthStatus: 'fair',
+    smoker: false,
+    assignedAgent: 'agent-003',
+    submittedAt: '2024-03-23T09:00:00',
+    status: 'approved',
+    notes: 'Wants to cover funeral expenses for family'
+  },
+  {
+    id: 'pol-004',
+    firstName: 'Patricia',
+    lastName: 'Brown',
+    email: 'patricia.b@email.com',
+    phone: '(770) 555-0134',
+    age: 38,
+    productType: 'Universal Life',
+    coverageAmount: 400000,
+    monthlyBudget: 350,
+    healthStatus: 'good',
+    smoker: false,
+    assignedAgent: 'agent-004',
+    submittedAt: '2024-03-22T16:45:00',
+    status: 'pending',
+    notes: 'Interested in flexible premium options'
+  },
+  {
+    id: 'pol-005',
+    firstName: 'Thomas',
+    lastName: 'Garcia',
+    email: 'thomas.g@email.com',
+    phone: '(813) 555-0145',
+    age: 29,
+    productType: 'Term Life - 30 Year',
+    coverageAmount: 750000,
+    monthlyBudget: 100,
+    healthStatus: 'excellent',
+    smoker: false,
+    assignedAgent: 'agent-005',
+    submittedAt: '2024-03-21T11:30:00',
+    status: 'documents_needed',
+    notes: 'Just got married, budget conscious'
+  },
+  {
+    id: 'pol-006',
+    firstName: 'Elizabeth',
+    lastName: 'Martin',
+    email: 'elizabeth.m@email.com',
+    phone: '(256) 555-0178',
+    age: 48,
+    productType: 'Whole Life',
+    coverageAmount: 500000,
+    monthlyBudget: 400,
+    healthStatus: 'good',
+    smoker: false,
+    assignedAgent: 'agent-001',
+    submittedAt: '2024-03-20T13:00:00',
+    status: 'approved',
+    notes: 'Business owner, estate planning purposes'
+  }
+];
+
+let policyApplicationsStore = [...policyApplications];
+
+export const getPolicyApplications = () => policyApplicationsStore;
+
+export const updatePolicyApplicationStatus = (id, status) => {
+  policyApplicationsStore = policyApplicationsStore.map(app =>
+    app.id === id ? { ...app, status } : app
+  );
+};
+
 // Job Applications (mock data for demo)
 export const applications = [
   {

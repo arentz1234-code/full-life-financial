@@ -102,9 +102,10 @@ function DashboardLayout({ role }) {
 
   const adminNav = [
     { path: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
+    { path: '/admin/policy-applications', icon: FileText, label: 'Policy Applications' },
     { path: '/admin/agents', icon: Users, label: 'Agents' },
     { path: '/admin/analytics', icon: BarChart3, label: 'Analytics' },
-    { path: '/admin/applications', icon: ClipboardList, label: 'Applications' }
+    { path: '/admin/applications', icon: ClipboardList, label: 'Job Applications' }
   ]
 
   const agentNav = [

@@ -14,6 +14,7 @@ import AdminDashboard from './pages/admin/Dashboard'
 import AdminAgents from './pages/admin/Agents'
 import AdminAnalytics from './pages/admin/Analytics'
 import AdminApplications from './pages/admin/Applications'
+import PolicyApplications from './pages/admin/PolicyApplications'
 
 // Agent Pages
 import AgentDashboard from './pages/agent/Dashboard'
@@ -52,6 +53,7 @@ function App() {
           <Route path="agents" element={<AdminAgents />} />
           <Route path="analytics" element={<AdminAnalytics />} />
           <Route path="applications" element={<AdminApplications />} />
+          <Route path="policy-applications" element={<PolicyApplications />} />
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
         </Route>
