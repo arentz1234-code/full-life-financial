@@ -41,16 +41,18 @@
 
 .position-label {
   display: block;
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
   margin-bottom: 4px;
+  font-weight: 500;
 }
 
 .position-value {
   font-size: 3rem;
   font-weight: 800;
-  color: var(--accent);
+  color: #FFD700;
   line-height: 1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .rank-stats {
@@ -66,25 +68,28 @@
   display: block;
   font-size: 1.5rem;
   font-weight: 700;
+  color: #FFFFFF;
 }
 
 .rank-stat .stat-label {
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
 }
 
 .rank-badges {
   display: flex;
-  gap: 8px;
+  gap: 10px;
 }
 
 .mini-badge {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.15);
-  padding: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 12px;
   border-radius: var(--radius);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Podium */
