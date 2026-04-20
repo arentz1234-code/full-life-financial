@@ -15,6 +15,9 @@ import AdminAgents from './pages/admin/Agents'
 import AdminAnalytics from './pages/admin/Analytics'
 import AdminApplications from './pages/admin/Applications'
 import PolicyApplications from './pages/admin/PolicyApplications'
+import CommissionTiers from './pages/admin/CommissionTiers'
+import Carriers from './pages/admin/Carriers'
+import AdminSales from './pages/admin/Sales'
 
 // Agent Pages
 import AgentDashboard from './pages/agent/Dashboard'
@@ -23,6 +26,7 @@ import AgentSales from './pages/agent/Sales'
 import AgentMap from './pages/agent/Map'
 import AgentLeaderboard from './pages/agent/Leaderboard'
 import AgentApplications from './pages/agent/Applications'
+import AgentNotifications from './pages/agent/Notifications'
 
 // Shared Pages
 import Profile from './pages/shared/Profile'
@@ -52,6 +56,9 @@ function App() {
         <Route path="/admin" element={<DashboardLayout role="admin" />}>
           <Route index element={<AdminDashboard />} />
           <Route path="agents" element={<AdminAgents />} />
+          <Route path="commission-tiers" element={<CommissionTiers />} />
+          <Route path="carriers" element={<Carriers />} />
+          <Route path="sales" element={<AdminSales />} />
           <Route path="analytics" element={<AdminAnalytics />} />
           <Route path="applications" element={<AdminApplications />} />
           <Route path="policy-applications" element={<PolicyApplications />} />
@@ -67,6 +74,7 @@ function App() {
           <Route path="map" element={<AgentMap />} />
           <Route path="leaderboard" element={<AgentLeaderboard />} />
           <Route path="applications" element={<AgentApplications />} />
+          <Route path="notifications" element={<AgentNotifications />} />
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
         </Route>

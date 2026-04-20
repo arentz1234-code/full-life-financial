@@ -4,10 +4,47 @@ import {
   LayoutDashboard, Users, BarChart3,
   Target, Map, Trophy, FileText, LogOut, Bell, Search,
   TrendingUp, ClipboardList, ChevronDown, Settings, User,
-  DollarSign, UserPlus, Award, AlertCircle, Check, X, Menu
+  DollarSign, UserPlus, Award, AlertCircle, Check, X, Menu,
+  Layers, Building2, Receipt, Sparkles
 } from 'lucide-react'
-import { adminUser, agents } from '../data/mockData'
+import {
+  adminUser,
+  agents,
+  getNotifications,
+  getUnreadNotificationCount,
+  markNotificationRead,
+  markAllNotificationsRead
+} from '../data/mockData'
 import './DashboardLayout.css'
+
+// Map notification types to icons
+const notificationIcons = {
+  tier_changed: Sparkles,
+  lead_assigned: Target,
+  contest_started: Trophy,
+  paid_status_changed: DollarSign,
+  sale: DollarSign,
+  achievement: Award,
+  alert: AlertCircle,
+  team: UserPlus
+}
+
+// Format relative time
+const formatRelativeTime = (dateStr) => {
+  const date = new Date(dateStr)
+  const now = new Date()
+  const diffMs = now - date
+  const diffMins = Math.floor(diffMs / (1000 * 60))
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+
+  if (diffMins < 1) return 'Just now'
+  if (diffMins < 60) return `${diffMins} min ago`
+  if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`
+  if (diffDays === 1) return 'Yesterday'
+  if (diffDays < 7) return `${diffDays} days ago`
+  return date.toLocaleDateString()
+}
 
 function DashboardLayout({ role }) {
   const location = useLocation()
@@ -15,75 +52,36 @@ function DashboardLayout({ role }) {
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
   const [notificationsOpen, setNotificationsOpen] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [notificationsRefresh, setNotificationsRefresh] = useState(0)
   const profileMenuRef = useRef(null)
   const notificationsRef = useRef(null)
 
   // Get current user based on role (for demo, use first agent if role is agent)
   const currentUser = role === 'admin' ? adminUser : agents[0]
 
-  // Mock notifications
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      type: 'sale',
-      title: 'New Sale Closed',
-      message: 'Sarah Mitchell closed a $2,500 Whole Life policy',
-      time: '5 min ago',
-      read: false,
-      icon: DollarSign
-    },
-    {
-      id: 2,
-      type: 'lead',
-      title: 'New Hot Lead',
-      message: 'Robert Williams requested a quote for Term Life',
-      time: '1 hour ago',
-      read: false,
-      icon: Target
-    },
-    {
-      id: 3,
-      type: 'achievement',
-      title: 'Badge Earned!',
-      message: 'You earned the "Week Warrior" badge',
-      time: '2 hours ago',
-      read: false,
-      icon: Award
-    },
-    {
-      id: 4,
-      type: 'alert',
-      title: 'Follow-up Reminder',
-      message: 'Michelle Davis follow-up is due today',
-      time: '3 hours ago',
-      read: true,
-      icon: AlertCircle
-    },
-    {
-      id: 5,
-      type: 'team',
-      title: 'New Team Member',
-      message: 'Amanda Rivera joined the team',
-      time: 'Yesterday',
-      read: true,
-      icon: UserPlus
-    }
-  ])
+  // Get notifications from centralized store
+  const agentId = role === 'agent' ? currentUser.id : null
+  const rawNotifications = role === 'agent' ? getNotifications(agentId) : []
+  const unreadCount = role === 'agent' ? getUnreadNotificationCount(agentId) : 0
 
-  const unreadCount = notifications.filter(n => !n.read).length
+  // Transform notifications to include icons and formatted time
+  const notifications = rawNotifications.map(n => ({
+    ...n,
+    icon: notificationIcons[n.type] || Bell,
+    time: formatRelativeTime(n.createdAt),
+    read: n.isRead
+  }))
 
   const markAsRead = (id) => {
-    setNotifications(notifications.map(n =>
-      n.id === id ? { ...n, read: true } : n
-    ))
+    markNotificationRead(id)
+    setNotificationsRefresh(prev => prev + 1)
   }
 
   const markAllAsRead = () => {
-    setNotifications(notifications.map(n => ({ ...n, read: true })))
-  }
-
-  const removeNotification = (id) => {
-    setNotifications(notifications.filter(n => n.id !== id))
+    if (agentId) {
+      markAllNotificationsRead(agentId)
+      setNotificationsRefresh(prev => prev + 1)
+    }
   }
 
   // Close menus when clicking outside
@@ -102,8 +100,11 @@ function DashboardLayout({ role }) {
 
   const adminNav = [
     { path: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
-    { path: '/admin/policy-applications', icon: FileText, label: 'Policy Applications' },
+    { path: '/admin/sales', icon: Receipt, label: 'All Sales' },
     { path: '/admin/agents', icon: Users, label: 'Agents' },
+    { path: '/admin/commission-tiers', icon: Layers, label: 'Commission Tiers' },
+    { path: '/admin/carriers', icon: Building2, label: 'Carriers' },
+    { path: '/admin/policy-applications', icon: FileText, label: 'Policy Applications' },
     { path: '/admin/analytics', icon: BarChart3, label: 'Analytics' },
     { path: '/admin/applications', icon: ClipboardList, label: 'Job Applications' }
   ]
@@ -134,7 +135,7 @@ function DashboardLayout({ role }) {
       <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
           <Link to="/" className="sidebar-logo">
-            <img src="/logo.svg" alt="Full Life Financial" className="sidebar-logo-img" />
+            <img src="/logo.png" alt="Full Life Financial" className="sidebar-logo-img" />
             <div className="logo-text">
               <span className="logo-name">Full Life</span>
               <span className="logo-tagline">Financial</span>
@@ -242,7 +243,7 @@ function DashboardLayout({ role }) {
                         <p>No notifications</p>
                       </div>
                     ) : (
-                      notifications.map(notification => {
+                      notifications.slice(0, 5).map(notification => {
                         const IconComponent = notification.icon
                         return (
                           <div
@@ -254,19 +255,9 @@ function DashboardLayout({ role }) {
                               <IconComponent size={18} />
                             </div>
                             <div className="notification-content">
-                              <span className="notification-title">{notification.title}</span>
                               <span className="notification-message">{notification.message}</span>
                               <span className="notification-time">{notification.time}</span>
                             </div>
-                            <button
-                              className="notification-dismiss"
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                removeNotification(notification.id)
-                              }}
-                            >
-                              <X size={14} />
-                            </button>
                           </div>
                         )
                       })

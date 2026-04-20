@@ -41,7 +41,7 @@ function PublicLayout() {
       <header className="header">
         <div className="container">
           <Link to="/" className="logo">
-            <img src="/logo.svg" alt="Full Life Financial" className="logo-img" />
+            <img src="/logo.png" alt="Full Life Financial" className="logo-img" />
             <div className="logo-text">
               <span className="logo-name">Full Life</span>
               <span className="logo-tagline">Financial</span>
@@ -89,7 +89,7 @@ function PublicLayout() {
           <div className="footer-grid">
             <div className="footer-brand">
               <Link to="/" className="logo">
-                <img src="/logo.svg" alt="Full Life Financial" className="logo-img footer-logo-img" />
+                <img src="/logo.png" alt="Full Life Financial" className="logo-img footer-logo-img" />
                 <div className="logo-text">
                   <span className="logo-name">Full Life</span>
                   <span className="logo-tagline">Financial</span>

@@ -1,289 +1,360 @@
-import { DollarSign, Target, TrendingUp, Flame, Award, ArrowUp, Clock, CheckCircle, Briefcase, Gem, Zap, Crown, BookOpen, Rocket, Phone, Calendar, FileText, Trophy, Mail } from 'lucide-react'
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts'
-import { agents, leads, sales, getAgentStats, badges as badgeDefinitions, activities } from '../../data/mockData'
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { DollarSign, Target, TrendingUp, Flame, Award, ArrowUp, Crown, Medal, Trophy, Plus, Calendar, Sparkles, ChevronRight } from 'lucide-react'
+import {
+  agents,
+  getSalesByAgent,
+  getAgentGoal,
+  setAgentGoal,
+  getActiveContests,
+  getAgentTierInfo,
+  getSales
+} from '../../data/mockData'
 import './AgentDashboard.css'
 
-// Map icon names to Lucide components
-const iconMap = {
-  target: Target,
-  briefcase: Briefcase,
-  gem: Gem,
-  flame: Flame,
-  zap: Zap,
-  crown: Crown,
-  'book-open': BookOpen,
-  rocket: Rocket
-}
-
-// Badge icon component
-function BadgeIcon({ badge, size = 24 }) {
-  const IconComponent = iconMap[badge.icon]
-  if (!IconComponent) return null
-  return <IconComponent size={size} style={{ color: badge.color }} />
-}
-
 function AgentDashboard() {
-  // Using first agent for demo
   const agent = agents[0]
-  const stats = getAgentStats(agent.id)
-  const agentLeads = leads.filter(l => l.assignedTo === agent.id)
-  const agentSales = sales.filter(s => s.agentId === agent.id)
-  const agentActivities = activities.filter(a => a.agentId === agent.id)
+  const agentSales = getSalesByAgent(agent.id)
+  const tierInfo = getAgentTierInfo(agent.id)
+  const contests = getActiveContests()
 
-  // Weekly performance
-  const weeklyData = [
-    { day: 'Mon', calls: 15, quotes: 3 },
-    { day: 'Tue', calls: 22, quotes: 5 },
-    { day: 'Wed', calls: 18, quotes: 2 },
-    { day: 'Thu', calls: 25, quotes: 6 },
-    { day: 'Fri', calls: 20, quotes: 4 }
-  ]
+  const [leaderboardPeriod, setLeaderboardPeriod] = useState('month')
+  const [showGoalModal, setShowGoalModal] = useState(false)
+  const [goalAmount, setGoalAmount] = useState('')
 
-  // Goals progress
-  const goals = {
-    sales: { current: stats.totalSales, target: 10 },
-    revenue: { current: stats.totalRevenue, target: 15000 },
-    calls: { current: 100, target: 150 }
+  const currentMonth = new Date().getMonth() + 1
+  const currentYear = new Date().getFullYear()
+  const currentGoal = getAgentGoal(agent.id, currentMonth, currentYear)
+
+  // Calculate leaderboard data
+  const getLeaderboardData = () => {
+    const allSales = getSales()
+    const now = new Date()
+
+    // Filter sales based on period
+    const periodStart = new Date()
+    if (leaderboardPeriod === 'week') {
+      periodStart.setDate(now.getDate() - 7)
+    } else if (leaderboardPeriod === 'month') {
+      periodStart.setDate(1)
+    } else {
+      periodStart.setMonth(0, 1) // YTD
+    }
+
+    // Group sales by agent and calculate totals
+    const agentTotals = agents.map(a => {
+      const agentSalesInPeriod = allSales.filter(s =>
+        s.agentId === a.id && new Date(s.saleDate) >= periodStart
+      )
+      return {
+        ...a,
+        totalPremium: agentSalesInPeriod.reduce((sum, s) => sum + s.monthlyPremium, 0),
+        totalCommission: agentSalesInPeriod.reduce((sum, s) => sum + s.commission, 0),
+        policyCount: agentSalesInPeriod.length
+      }
+    }).sort((a, b) => b.totalPremium - a.totalPremium)
+
+    return agentTotals
+  }
+
+  const leaderboard = getLeaderboardData()
+  const myRank = leaderboard.findIndex(a => a.id === agent.id) + 1
+  const myStats = leaderboard.find(a => a.id === agent.id)
+
+  // Calculate goal progress
+  const currentMonthCommission = agentSales
+    .filter(s => {
+      const saleDate = new Date(s.saleDate)
+      return saleDate.getMonth() + 1 === currentMonth && saleDate.getFullYear() === currentYear
+    })
+    .reduce((sum, s) => sum + s.commission, 0)
+
+  const goalProgress = currentGoal
+    ? Math.min((currentMonthCommission / currentGoal.targetCommissionAmount) * 100, 100)
+    : 0
+
+  const handleSetGoal = () => {
+    if (goalAmount && parseFloat(goalAmount) > 0) {
+      setAgentGoal(agent.id, currentMonth, currentYear, parseFloat(goalAmount))
+      setShowGoalModal(false)
+      setGoalAmount('')
+    }
+  }
+
+  // Calculate sales needed to hit goal
+  const calculateRoadmap = () => {
+    if (!currentGoal) return null
+    const remaining = currentGoal.targetCommissionAmount - currentMonthCommission
+    if (remaining <= 0) return { remaining: 0, salesNeeded: 0, perWeek: 0 }
+
+    const avgCommissionPerSale = agentSales.length > 0
+      ? agentSales.reduce((sum, s) => sum + s.commission, 0) / agentSales.length
+      : 500
+
+    const salesNeeded = Math.ceil(remaining / avgCommissionPerSale)
+    const daysLeft = new Date(currentYear, currentMonth, 0).getDate() - new Date().getDate()
+    const weeksLeft = Math.max(1, Math.ceil(daysLeft / 7))
+
+    return {
+      remaining,
+      salesNeeded,
+      perWeek: Math.ceil(salesNeeded / weeksLeft)
+    }
+  }
+
+  const roadmap = calculateRoadmap()
+
+  const getRankIcon = (rank) => {
+    if (rank === 1) return <Crown size={16} />
+    if (rank === 2) return <Medal size={16} />
+    if (rank === 3) return <Award size={16} />
+    return null
+  }
+
+  const getRankClass = (rank) => {
+    if (rank === 1) return 'gold'
+    if (rank === 2) return 'silver'
+    if (rank === 3) return 'bronze'
+    return ''
   }
 
   return (
     <div className="agent-dashboard">
-      {/* Welcome Banner */}
-      <div className="welcome-banner">
+      {/* Welcome + Log Sale */}
+      <div className="welcome-section">
         <div className="welcome-content">
           <h1>Welcome back, {agent.name.split(' ')[0]}!</h1>
-          <p>You're on a {agent.streak}-day streak. Keep it up!</p>
+          <p>
+            You're ranked <strong>#{myRank}</strong> this {leaderboardPeriod}
+            {agent.streak > 0 && (
+              <span className="streak-inline">
+                <Flame size={14} /> {agent.streak}-day streak
+              </span>
+            )}
+          </p>
         </div>
-        <div className="streak-badge">
-          <Flame size={24} />
-          <span>{agent.streak}</span>
-        </div>
+        <Link to="/agent/sales" className="btn btn-primary btn-lg log-sale-cta">
+          <Plus size={20} />
+          Log a Sale
+        </Link>
       </div>
 
-      {/* Level Progress */}
-      <div className="level-card">
-        <div className="level-info">
-          <div className="level-badge">
-            <Award size={20} />
-            <span>Level {agent.level}</span>
+      {/* Active Contest Banner */}
+      {contests.length > 0 && (
+        <div className="contest-banner">
+          <div className="contest-icon">
+            <Trophy size={24} />
           </div>
-          <div className="xp-info">
-            <span className="xp-current">{agent.xp.toLocaleString()} XP</span>
-            <span className="xp-divider">/</span>
-            <span className="xp-target">{agent.xpToNextLevel.toLocaleString()} XP</span>
+          <div className="contest-info">
+            <span className="contest-label">Active Contest</span>
+            <span className="contest-name">{contests[0].name}</span>
+            <span className="contest-prize">{contests[0].prizeDescription}</span>
+          </div>
+          <div className="contest-dates">
+            Ends {new Date(contests[0].endDate).toLocaleDateString()}
           </div>
         </div>
-        <div className="level-progress">
-          <div
-            className="level-bar"
-            style={{ width: `${(agent.xp / agent.xpToNextLevel) * 100}%` }}
-          />
-        </div>
-        <span className="level-message">
-          {agent.xpToNextLevel - agent.xp} XP until Level {agent.level + 1}
-        </span>
-      </div>
+      )}
 
-      {/* Stats Grid */}
-      <div className="stats-grid">
-        <div className="stat-card">
-          <div className="stat-header">
-            <div className="stat-icon" style={{ background: 'rgba(212, 168, 83, 0.1)', color: 'var(--accent)' }}>
-              <DollarSign size={22} />
-            </div>
-          </div>
-          <div className="stat-value">${stats.totalRevenue.toLocaleString()}</div>
-          <div className="stat-label">Commission (MTD)</div>
-          <div className="stat-change positive">
-            <ArrowUp size={14} />
-            +$1,200 this week
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-header">
-            <div className="stat-icon" style={{ background: 'rgba(27, 94, 32, 0.1)', color: 'var(--primary)' }}>
-              <Target size={22} />
-            </div>
-          </div>
-          <div className="stat-value">{stats.activeLeads}</div>
-          <div className="stat-label">Active Leads</div>
-          <div className="stat-change positive">
-            <ArrowUp size={14} />
-            +2 new today
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-header">
-            <div className="stat-icon" style={{ background: 'rgba(16, 185, 129, 0.1)', color: 'var(--success)' }}>
-              <CheckCircle size={22} />
-            </div>
-          </div>
-          <div className="stat-value">{stats.totalSales}</div>
-          <div className="stat-label">Policies Sold</div>
-          <div className="stat-change positive">
-            <ArrowUp size={14} />
-            On track for bonus
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-header">
-            <div className="stat-icon" style={{ background: 'rgba(59, 130, 246, 0.1)', color: 'var(--info)' }}>
-              <TrendingUp size={22} />
-            </div>
-          </div>
-          <div className="stat-value">{stats.closeRate}%</div>
-          <div className="stat-label">Close Rate</div>
-          <div className="stat-change positive">
-            <ArrowUp size={14} />
-            +5% vs last month
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content Grid */}
-      <div className="content-grid">
-        {/* Goals Progress */}
-        <div className="card goals-card">
-          <h3>Monthly Goals</h3>
-          <div className="goals-list">
-            <div className="goal-item">
-              <div className="goal-info">
-                <span className="goal-label">Sales</span>
-                <span className="goal-values">{goals.sales.current} / {goals.sales.target}</span>
-              </div>
-              <div className="goal-progress">
-                <div
-                  className="goal-bar"
-                  style={{
-                    width: `${Math.min((goals.sales.current / goals.sales.target) * 100, 100)}%`,
-                    background: goals.sales.current >= goals.sales.target ? 'var(--success)' : 'var(--primary)'
-                  }}
-                />
-              </div>
-            </div>
-            <div className="goal-item">
-              <div className="goal-info">
-                <span className="goal-label">Revenue</span>
-                <span className="goal-values">${(goals.revenue.current / 1000).toFixed(1)}k / ${(goals.revenue.target / 1000).toFixed(1)}k</span>
-              </div>
-              <div className="goal-progress">
-                <div
-                  className="goal-bar"
-                  style={{
-                    width: `${Math.min((goals.revenue.current / goals.revenue.target) * 100, 100)}%`,
-                    background: 'var(--accent)'
-                  }}
-                />
-              </div>
-            </div>
-            <div className="goal-item">
-              <div className="goal-info">
-                <span className="goal-label">Calls</span>
-                <span className="goal-values">{goals.calls.current} / {goals.calls.target}</span>
-              </div>
-              <div className="goal-progress">
-                <div
-                  className="goal-bar"
-                  style={{
-                    width: `${Math.min((goals.calls.current / goals.calls.target) * 100, 100)}%`,
-                    background: 'var(--info)'
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Weekly Activity Chart */}
-        <div className="card chart-card">
-          <h3>This Week's Activity</h3>
-          <div className="chart-body" style={{ height: 200 }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={weeklyData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-                <XAxis dataKey="day" stroke="#9CA3AF" fontSize={12} />
-                <YAxis stroke="#9CA3AF" fontSize={12} />
-                <Tooltip contentStyle={{ borderRadius: 8, border: '1px solid #E5E7EB' }} />
-                <Bar dataKey="calls" fill="#1B5E20" name="Calls" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="quotes" fill="#D4A853" name="Quotes" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Row */}
-      <div className="bottom-grid">
-        {/* Hot Leads */}
-        <div className="card">
+      {/* Main Grid */}
+      <div className="dashboard-grid">
+        {/* Leaderboard */}
+        <div className="leaderboard-card">
           <div className="card-header">
-            <h3>Hot Leads</h3>
-            <span className="badge badge-error">{stats.hotLeads} Hot</span>
+            <div className="header-title">
+              <Trophy size={20} className="trophy-icon" />
+              <h3>Leaderboard</h3>
+            </div>
+            <div className="period-toggle">
+              <button
+                className={leaderboardPeriod === 'week' ? 'active' : ''}
+                onClick={() => setLeaderboardPeriod('week')}
+              >
+                Week
+              </button>
+              <button
+                className={leaderboardPeriod === 'month' ? 'active' : ''}
+                onClick={() => setLeaderboardPeriod('month')}
+              >
+                Month
+              </button>
+              <button
+                className={leaderboardPeriod === 'ytd' ? 'active' : ''}
+                onClick={() => setLeaderboardPeriod('ytd')}
+              >
+                YTD
+              </button>
+            </div>
           </div>
-          <div className="leads-list">
-            {agentLeads.filter(l => l.status === 'hot').map(lead => (
-              <div key={lead.id} className="lead-item">
-                <div className="lead-info">
-                  <span className="lead-name">{lead.name}</span>
-                  <span className="lead-product">{lead.productInterest}</span>
-                </div>
-                <div className="lead-value">${lead.estimatedValue.toLocaleString()}</div>
-              </div>
-            ))}
-          </div>
-        </div>
 
-        {/* Recent Activity */}
-        <div className="card">
-          <div className="card-header">
-            <h3>Recent Activity</h3>
-          </div>
-          <div className="activity-list">
-            {agentActivities.slice(0, 5).map(activity => (
-              <div key={activity.id} className="activity-item">
-                <div className={`activity-icon ${activity.type}`}>
-                  {activity.type === 'call' && <Phone size={18} />}
-                  {activity.type === 'meeting' && <Calendar size={18} />}
-                  {activity.type === 'quote' && <FileText size={18} />}
-                  {activity.type === 'close' && <Trophy size={18} />}
-                  {activity.type === 'email' && <Mail size={18} />}
+          <div className="leaderboard-list">
+            {leaderboard.map((a, idx) => (
+              <div
+                key={a.id}
+                className={`leaderboard-item ${a.id === agent.id ? 'is-me' : ''} ${getRankClass(idx + 1)}`}
+              >
+                <div className="rank">
+                  {getRankIcon(idx + 1) || <span>{idx + 1}</span>}
                 </div>
-                <div className="activity-content">
-                  <span className="activity-desc">{activity.description}</span>
-                  <span className="activity-time">
-                    <Clock size={12} />
-                    {new Date(activity.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </span>
+                <div className="avatar" style={{ background: `hsl(${a.id.charCodeAt(6) * 30}, 60%, 45%)` }}>
+                  {a.avatar}
+                </div>
+                <div className="agent-info">
+                  <span className="agent-name">{a.name} {a.id === agent.id && '(You)'}</span>
+                  <span className="agent-stats">{a.policyCount} policies</span>
+                </div>
+                <div className="agent-premium">
+                  <span className="premium-value">${a.totalPremium.toLocaleString()}</span>
+                  <span className="premium-label">premium</span>
                 </div>
               </div>
             ))}
           </div>
+
+          <Link to="/agent/leaderboard" className="view-full-link">
+            View Full Leaderboard <ChevronRight size={16} />
+          </Link>
         </div>
 
-        {/* Badges */}
-        <div className="card">
-          <div className="card-header">
-            <h3>Your Badges</h3>
-            <span className="badge badge-gold">{agent.badges.length} Earned</span>
+        {/* Stats + Goal Section */}
+        <div className="stats-section">
+          {/* Commission Counter */}
+          <div className="commission-card">
+            <div className="commission-header">
+              <DollarSign size={24} />
+              <span>My Commission</span>
+            </div>
+            <div className="commission-value">
+              ${currentMonthCommission.toLocaleString()}
+            </div>
+            <div className="commission-period">
+              <Calendar size={14} />
+              {new Date().toLocaleString('default', { month: 'long' })} {currentYear}
+            </div>
+            {tierInfo && (
+              <div className="tier-info">
+                <Sparkles size={14} />
+                {tierInfo.name} ({(tierInfo.baseMultiplier * 100).toFixed(0)}% rate)
+              </div>
+            )}
           </div>
-          <div className="badges-grid">
-            {agent.badges.map(badgeId => {
-              const badge = badgeDefinitions[badgeId]
-              return badge ? (
-                <div key={badgeId} className="badge-card" style={{ borderColor: badge.color }}>
-                  <span className="badge-emoji">
-                    <BadgeIcon badge={badge} size={28} />
-                  </span>
-                  <span className="badge-name">{badge.name}</span>
+
+          {/* Goal Progress */}
+          <div className="goal-card">
+            <div className="goal-header">
+              <Target size={20} />
+              <h3>Monthly Goal</h3>
+              <button className="edit-goal-btn" onClick={() => setShowGoalModal(true)}>
+                {currentGoal ? 'Edit' : 'Set Goal'}
+              </button>
+            </div>
+
+            {currentGoal ? (
+              <>
+                <div className="goal-progress">
+                  <div className="progress-bar">
+                    <div
+                      className="progress-fill"
+                      style={{ width: `${goalProgress}%` }}
+                    />
+                  </div>
+                  <div className="progress-labels">
+                    <span>${currentMonthCommission.toLocaleString()}</span>
+                    <span>${currentGoal.targetCommissionAmount.toLocaleString()}</span>
+                  </div>
                 </div>
-              ) : null
-            })}
+
+                {roadmap && roadmap.remaining > 0 ? (
+                  <div className="roadmap">
+                    <div className="roadmap-item">
+                      <span className="roadmap-value">${roadmap.remaining.toLocaleString()}</span>
+                      <span className="roadmap-label">remaining</span>
+                    </div>
+                    <div className="roadmap-item">
+                      <span className="roadmap-value">{roadmap.salesNeeded}</span>
+                      <span className="roadmap-label">sales needed</span>
+                    </div>
+                    <div className="roadmap-item">
+                      <span className="roadmap-value">{roadmap.perWeek}</span>
+                      <span className="roadmap-label">per week</span>
+                    </div>
+                  </div>
+                ) : roadmap && roadmap.remaining <= 0 ? (
+                  <div className="goal-achieved">
+                    <Award size={20} />
+                    <span>Goal achieved! Great work!</span>
+                  </div>
+                ) : null}
+              </>
+            ) : (
+              <div className="no-goal">
+                <p>Set a monthly commission goal to track your progress.</p>
+                <button className="btn btn-primary btn-sm" onClick={() => setShowGoalModal(true)}>
+                  Set Goal
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Quick Stats */}
+          <div className="quick-stats-row">
+            <div className="quick-stat">
+              <TrendingUp size={18} />
+              <div>
+                <span className="stat-value">{myStats?.policyCount || 0}</span>
+                <span className="stat-label">Policies This {leaderboardPeriod === 'month' ? 'Month' : leaderboardPeriod === 'week' ? 'Week' : 'Year'}</span>
+              </div>
+            </div>
+            <div className="quick-stat">
+              <ArrowUp size={18} />
+              <div>
+                <span className="stat-value">${(myStats?.totalCommission || 0).toLocaleString()}</span>
+                <span className="stat-label">Commission Earned</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Goal Modal */}
+      {showGoalModal && (
+        <div className="modal-overlay" onClick={() => setShowGoalModal(false)}>
+          <div className="modal-content goal-modal" onClick={(e) => e.stopPropagation()}>
+            <h2>Set Monthly Goal</h2>
+            <p>How much commission do you want to earn this month?</p>
+
+            <div className="form-group">
+              <label className="form-label">Target Commission</label>
+              <div className="input-with-prefix">
+                <span className="input-prefix">$</span>
+                <input
+                  type="number"
+                  className="form-input"
+                  placeholder="e.g., 5000"
+                  value={goalAmount}
+                  onChange={(e) => setGoalAmount(e.target.value)}
+                  autoFocus
+                />
+              </div>
+            </div>
+
+            {currentGoal && (
+              <p className="current-goal-note">
+                Current goal: ${currentGoal.targetCommissionAmount.toLocaleString()}
+              </p>
+            )}
+
+            <div className="form-actions">
+              <button className="btn btn-outline" onClick={() => setShowGoalModal(false)}>
+                Cancel
+              </button>
+              <button className="btn btn-primary" onClick={handleSetGoal}>
+                Save Goal
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

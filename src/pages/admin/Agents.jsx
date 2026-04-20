@@ -1,6 +1,17 @@
 import { useState } from 'react'
-import { Plus, Search, MoreVertical, Phone, Mail, MapPin, TrendingUp, Target, DollarSign, X, Download, Briefcase, Gem, Flame, Zap, Crown, BookOpen, Rocket } from 'lucide-react'
-import { agents, getAgentStats, badges as badgeDefinitions } from '../../data/mockData'
+import { Plus, Search, MoreVertical, Phone, Mail, MapPin, TrendingUp, Target, DollarSign, X, Download, Briefcase, Gem, Flame, Zap, Crown, BookOpen, Rocket, Layers, History, AlertTriangle } from 'lucide-react'
+import {
+  getAgents,
+  getAllAgentsWithTiers,
+  getAgentStats,
+  badges as badgeDefinitions,
+  getCommissionTiers,
+  getCommissionTierById,
+  updateAgentTier,
+  getAgentTierHistory,
+  adminUser,
+  addNotification
+} from '../../data/mockData'
 import { exportAgents } from '../../utils/exportToExcel'
 import './AdminAgents.css'
 
@@ -24,27 +35,88 @@ function BadgeIcon({ badge, size = 16 }) {
 }
 
 function AdminAgents() {
+  const [agents, setAgents] = useState(getAllAgentsWithTiers())
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedAgent, setSelectedAgent] = useState(null)
   const [showAddModal, setShowAddModal] = useState(false)
+  const [showTierModal, setShowTierModal] = useState(false)
+  const [showHistoryModal, setShowHistoryModal] = useState(false)
+  const [tierChangeAgent, setTierChangeAgent] = useState(null)
+  const [selectedTierId, setSelectedTierId] = useState('')
+  const [tierChangeReason, setTierChangeReason] = useState('')
   const [newAgent, setNewAgent] = useState({
     name: '',
     email: '',
     phone: '',
-    territory: 'Alabama'
+    territory: 'Alabama',
+    commissionTierId: ''
   })
+
+  const tiers = getCommissionTiers()
 
   const filteredAgents = agents.filter(agent =>
     agent.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     agent.territory.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
+  const refreshAgents = () => {
+    setAgents(getAllAgentsWithTiers())
+  }
+
   const handleAddAgent = (e) => {
     e.preventDefault()
-    // In a real app, this would make an API call
-    alert(`Agent ${newAgent.name} would be added!`)
+    alert(`Agent ${newAgent.name} would be added with tier ${newAgent.commissionTierId}!`)
     setShowAddModal(false)
-    setNewAgent({ name: '', email: '', phone: '', territory: 'Alabama' })
+    setNewAgent({ name: '', email: '', phone: '', territory: 'Alabama', commissionTierId: '' })
+  }
+
+  const openTierChangeModal = (agent, e) => {
+    e.stopPropagation()
+    setTierChangeAgent(agent)
+    setSelectedTierId(agent.commissionTierId)
+    setTierChangeReason('')
+    setShowTierModal(true)
+  }
+
+  const handleTierChange = () => {
+    if (!tierChangeAgent || !selectedTierId || selectedTierId === tierChangeAgent.commissionTierId) {
+      setShowTierModal(false)
+      return
+    }
+
+    const newTier = getCommissionTierById(selectedTierId)
+
+    // Update the tier
+    updateAgentTier(
+      tierChangeAgent.id,
+      selectedTierId,
+      adminUser.id,
+      tierChangeReason
+    )
+
+    // Send notification to agent
+    addNotification({
+      recipientAgentId: tierChangeAgent.id,
+      type: 'tier_changed',
+      message: `Your commission tier was updated to ${newTier.name} by ${adminUser.name}.`,
+      link: '/agent/profile'
+    })
+
+    refreshAgents()
+    setShowTierModal(false)
+    setTierChangeAgent(null)
+    setSelectedTierId('')
+    setTierChangeReason('')
+  }
+
+  const openHistoryModal = (agent, e) => {
+    e.stopPropagation()
+    setSelectedAgent(agent)
+    setShowHistoryModal(true)
+  }
+
+  const getTierHistory = (agentId) => {
+    return getAgentTierHistory(agentId)
   }
 
   return (
@@ -52,7 +124,7 @@ function AdminAgents() {
       <div className="page-header">
         <div>
           <h1>Agents</h1>
-          <p>Manage your sales team and monitor their performance.</p>
+          <p>Manage your sales team, assign commission tiers, and monitor performance.</p>
         </div>
         <div className="header-actions">
           <button className="btn btn-outline" onClick={() => exportAgents(agents, getAgentStats)}>
@@ -85,9 +157,10 @@ function AdminAgents() {
             <option value="georgia">Georgia</option>
           </select>
           <select className="filter-select">
-            <option value="">All Status</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
+            <option value="">All Tiers</option>
+            {tiers.map(tier => (
+              <option key={tier.id} value={tier.id}>{tier.name}</option>
+            ))}
           </select>
         </div>
       </div>
@@ -96,6 +169,7 @@ function AdminAgents() {
       <div className="agents-grid">
         {filteredAgents.map(agent => {
           const stats = getAgentStats(agent.id)
+          const tier = getCommissionTierById(agent.commissionTierId)
           return (
             <div key={agent.id} className="agent-card" onClick={() => setSelectedAgent(agent)}>
               <div className="agent-card-header">
@@ -109,6 +183,31 @@ function AdminAgents() {
 
               <h3>{agent.name}</h3>
               <span className="agent-territory">{agent.territory}</span>
+
+              {/* Commission Tier */}
+              <div className="agent-tier-section">
+                <div className="tier-display">
+                  <Layers size={14} />
+                  <span className="tier-name">{tier?.name || 'No Tier'}</span>
+                  <span className="tier-rate">{tier ? `${(tier.baseMultiplier * 100).toFixed(0)}%` : '—'}</span>
+                </div>
+                <div className="tier-actions">
+                  <button
+                    className="tier-btn change"
+                    onClick={(e) => openTierChangeModal(agent, e)}
+                    title="Change Tier"
+                  >
+                    Change
+                  </button>
+                  <button
+                    className="tier-btn history"
+                    onClick={(e) => openHistoryModal(agent, e)}
+                    title="View History"
+                  >
+                    <History size={14} />
+                  </button>
+                </div>
+              </div>
 
               <div className="agent-contact">
                 <div className="contact-item">
@@ -128,7 +227,7 @@ function AdminAgents() {
                 </div>
                 <div className="stat-item">
                   <span className="stat-value">${(stats.totalRevenue / 1000).toFixed(1)}k</span>
-                  <span className="stat-label">Revenue</span>
+                  <span className="stat-label">Commission</span>
                 </div>
                 <div className="stat-item">
                   <span className="stat-value">{stats.closeRate}%</span>
@@ -159,7 +258,7 @@ function AdminAgents() {
       </div>
 
       {/* Agent Detail Modal */}
-      {selectedAgent && (
+      {selectedAgent && !showHistoryModal && (
         <div className="modal-overlay" onClick={() => setSelectedAgent(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close" onClick={() => setSelectedAgent(null)}>
@@ -190,7 +289,7 @@ function AdminAgents() {
                       </div>
                       <div className="stat-content">
                         <span className="stat-value">${stats.totalRevenue.toLocaleString()}</span>
-                        <span className="stat-label">Total Revenue</span>
+                        <span className="stat-label">Total Commission</span>
                       </div>
                     </div>
                     <div className="modal-stat">
@@ -212,6 +311,33 @@ function AdminAgents() {
                       </div>
                     </div>
                   </>
+                )
+              })()}
+            </div>
+
+            {/* Commission Tier Section */}
+            <div className="modal-section">
+              <h4>Commission Tier</h4>
+              {(() => {
+                const tier = getCommissionTierById(selectedAgent.commissionTierId)
+                return (
+                  <div className="tier-detail-card">
+                    <div className="tier-detail-info">
+                      <Layers size={20} />
+                      <div>
+                        <span className="tier-detail-name">{tier?.name || 'No Tier'}</span>
+                        <span className="tier-detail-rate">
+                          {tier ? `${(tier.baseMultiplier * 100).toFixed(0)}% of carrier payout` : 'Not assigned'}
+                        </span>
+                      </div>
+                    </div>
+                    <button
+                      className="btn btn-sm btn-outline"
+                      onClick={(e) => openTierChangeModal(selectedAgent, e)}
+                    >
+                      Change Tier
+                    </button>
+                  </div>
                 )
               })()}
             </div>
@@ -275,6 +401,120 @@ function AdminAgents() {
         </div>
       )}
 
+      {/* Change Tier Modal */}
+      {showTierModal && tierChangeAgent && (
+        <div className="modal-overlay" onClick={() => setShowTierModal(false)}>
+          <div className="modal-content modal-form" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setShowTierModal(false)}>
+              <X size={20} />
+            </button>
+
+            <h2>Change Commission Tier</h2>
+            <p>Update {tierChangeAgent.name}'s commission tier. This will apply to all future sales.</p>
+
+            <div className="current-tier-display">
+              <span className="label">Current Tier:</span>
+              <span className="value">
+                {getCommissionTierById(tierChangeAgent.commissionTierId)?.name || 'None'} ({(getCommissionTierById(tierChangeAgent.commissionTierId)?.baseMultiplier * 100 || 0).toFixed(0)}%)
+              </span>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">New Tier *</label>
+              <select
+                className="form-select"
+                value={selectedTierId}
+                onChange={(e) => setSelectedTierId(e.target.value)}
+              >
+                {tiers.map(tier => (
+                  <option key={tier.id} value={tier.id}>
+                    {tier.name} ({(tier.baseMultiplier * 100).toFixed(0)}%)
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Reason (optional)</label>
+              <textarea
+                className="form-textarea"
+                placeholder="Why is this tier being changed?"
+                value={tierChangeReason}
+                onChange={(e) => setTierChangeReason(e.target.value)}
+                rows={2}
+              />
+            </div>
+
+            {selectedTierId !== tierChangeAgent.commissionTierId && (
+              <div className="warning-banner info">
+                <AlertTriangle size={16} />
+                <span>
+                  The agent will receive a notification about this change.
+                </span>
+              </div>
+            )}
+
+            <div className="form-actions">
+              <button className="btn btn-outline" onClick={() => setShowTierModal(false)}>
+                Cancel
+              </button>
+              <button
+                className="btn btn-primary"
+                onClick={handleTierChange}
+                disabled={selectedTierId === tierChangeAgent.commissionTierId}
+              >
+                Update Tier
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tier History Modal */}
+      {showHistoryModal && selectedAgent && (
+        <div className="modal-overlay" onClick={() => { setShowHistoryModal(false); setSelectedAgent(null); }}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => { setShowHistoryModal(false); setSelectedAgent(null); }}>
+              <X size={20} />
+            </button>
+
+            <h2>Tier History</h2>
+            <p>Commission tier changes for {selectedAgent.name}</p>
+
+            <div className="history-list">
+              {getTierHistory(selectedAgent.id).length === 0 ? (
+                <div className="empty-history">
+                  <History size={32} />
+                  <p>No tier changes recorded yet.</p>
+                </div>
+              ) : (
+                getTierHistory(selectedAgent.id).map(entry => {
+                  const prevTier = getCommissionTierById(entry.previousTierId)
+                  const newTier = getCommissionTierById(entry.newTierId)
+                  return (
+                    <div key={entry.id} className="history-item">
+                      <div className="history-change">
+                        <span className="old-tier">{prevTier?.name || 'Unknown'}</span>
+                        <span className="arrow">→</span>
+                        <span className="new-tier">{newTier?.name || 'Unknown'}</span>
+                      </div>
+                      <div className="history-meta">
+                        <span className="history-date">
+                          {new Date(entry.changedAt).toLocaleDateString()} at {new Date(entry.changedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                        {entry.reason && (
+                          <span className="history-reason">"{entry.reason}"</span>
+                        )}
+                      </div>
+                    </div>
+                  )
+                })
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Add Agent Modal */}
       {showAddModal && (
         <div className="modal-overlay" onClick={() => setShowAddModal(false)}>
@@ -330,6 +570,23 @@ function AdminAgents() {
                   <option value="Alabama">Alabama</option>
                   <option value="Florida">Florida</option>
                   <option value="Georgia">Georgia</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Commission Tier *</label>
+                <select
+                  className="form-select"
+                  value={newAgent.commissionTierId}
+                  onChange={(e) => setNewAgent({ ...newAgent, commissionTierId: e.target.value })}
+                  required
+                >
+                  <option value="">Select a tier...</option>
+                  {tiers.map(tier => (
+                    <option key={tier.id} value={tier.id}>
+                      {tier.name} ({(tier.baseMultiplier * 100).toFixed(0)}%)
+                    </option>
+                  ))}
                 </select>
               </div>
 

@@ -1,5 +1,238 @@
 // Mock Data for Full Life Financial
 
+// Commission Tiers
+export const commissionTiers = [
+  {
+    id: 'tier-001',
+    name: 'New Hire',
+    baseMultiplier: 0.50,
+    notes: 'Starting tier for new agents in training period',
+    createdAt: '2024-01-01T00:00:00',
+    createdByAdminId: 'admin-001',
+    archivedAt: null
+  },
+  {
+    id: 'tier-002',
+    name: 'Buys Own Leads',
+    baseMultiplier: 0.60,
+    notes: 'Agents who purchase their own leads receive higher commission',
+    createdAt: '2024-01-01T00:00:00',
+    createdByAdminId: 'admin-001',
+    archivedAt: null
+  },
+  {
+    id: 'tier-003',
+    name: 'Senior Agent',
+    baseMultiplier: 0.70,
+    notes: 'Agents with 2+ years experience and consistent performance',
+    createdAt: '2024-01-01T00:00:00',
+    createdByAdminId: 'admin-001',
+    archivedAt: null
+  },
+  {
+    id: 'tier-004',
+    name: 'Top Producer',
+    baseMultiplier: 0.80,
+    notes: 'Elite agents with proven track record of high production',
+    createdAt: '2024-01-01T00:00:00',
+    createdByAdminId: 'admin-001',
+    archivedAt: null
+  }
+];
+
+// Carriers with commission rates
+export const carriers = [
+  {
+    id: 'carrier-001',
+    name: 'Mutual of Omaha',
+    commissionRate: 1.10,
+    notes: 'Primary final expense carrier',
+    isActive: true,
+    createdAt: '2024-01-01T00:00:00',
+    archivedAt: null
+  },
+  {
+    id: 'carrier-002',
+    name: 'AIG',
+    commissionRate: 1.15,
+    notes: 'Term and whole life products',
+    isActive: true,
+    createdAt: '2024-01-01T00:00:00',
+    archivedAt: null
+  },
+  {
+    id: 'carrier-003',
+    name: 'Transamerica',
+    commissionRate: 1.20,
+    notes: 'Universal life specialty',
+    isActive: true,
+    createdAt: '2024-01-01T00:00:00',
+    archivedAt: null
+  },
+  {
+    id: 'carrier-004',
+    name: 'Foresters Financial',
+    commissionRate: 1.05,
+    notes: 'Final expense and small whole life',
+    isActive: true,
+    createdAt: '2024-01-01T00:00:00',
+    archivedAt: null
+  },
+  {
+    id: 'carrier-005',
+    name: 'Liberty Bankers',
+    commissionRate: 1.25,
+    notes: 'High commission final expense',
+    isActive: true,
+    createdAt: '2024-01-01T00:00:00',
+    archivedAt: null
+  }
+];
+
+// Agent Tier History (tracks all tier assignments)
+export const agentTierHistory = [
+  {
+    id: 'history-001',
+    agentId: 'agent-001',
+    previousTierId: 'tier-001',
+    newTierId: 'tier-003',
+    changedByAdminId: 'admin-001',
+    changedAt: '2024-02-01T10:00:00',
+    reason: 'Promoted after excellent Q4 performance'
+  },
+  {
+    id: 'history-002',
+    agentId: 'agent-002',
+    previousTierId: 'tier-001',
+    newTierId: 'tier-002',
+    changedByAdminId: 'admin-001',
+    changedAt: '2024-01-15T14:30:00',
+    reason: 'Agent now purchasing own leads'
+  }
+];
+
+// Commission Audit Log
+export const commissionAuditLog = [
+  {
+    id: 'audit-001',
+    changedByAdminId: 'admin-001',
+    entityType: 'tier',
+    entityId: 'tier-003',
+    fieldChanged: 'baseMultiplier',
+    oldValue: '0.65',
+    newValue: '0.70',
+    changedAt: '2024-02-15T09:00:00'
+  },
+  {
+    id: 'audit-002',
+    changedByAdminId: 'admin-001',
+    entityType: 'agent_tier_assignment',
+    entityId: 'agent-001',
+    fieldChanged: 'commission_tier_id',
+    oldValue: 'tier-001',
+    newValue: 'tier-003',
+    changedAt: '2024-02-01T10:00:00'
+  },
+  {
+    id: 'audit-003',
+    changedByAdminId: 'admin-001',
+    entityType: 'carrier',
+    entityId: 'carrier-005',
+    fieldChanged: 'commissionRate',
+    oldValue: '1.20',
+    newValue: '1.25',
+    changedAt: '2024-03-01T11:30:00'
+  }
+];
+
+// Contests
+export const contests = [
+  {
+    id: 'contest-001',
+    name: 'March Madness',
+    description: 'Highest total premium wins a weekend getaway!',
+    startDate: '2024-03-01',
+    endDate: '2024-03-31',
+    prizeDescription: '$500 travel voucher',
+    metric: 'total_premium',
+    isActive: true,
+    winnerAgentId: null,
+    createdAt: '2024-02-25T10:00:00'
+  },
+  {
+    id: 'contest-002',
+    name: 'Policy Sprint',
+    description: 'Most policies written this week wins!',
+    startDate: '2024-03-25',
+    endDate: '2024-03-31',
+    prizeDescription: '$200 bonus',
+    metric: 'policy_count',
+    isActive: true,
+    winnerAgentId: null,
+    createdAt: '2024-03-24T09:00:00'
+  }
+];
+
+// Agent Goals
+export const agentGoals = [
+  {
+    id: 'goal-001',
+    agentId: 'agent-001',
+    month: 3,
+    year: 2024,
+    targetCommissionAmount: 8000,
+    createdAt: '2024-03-01T08:00:00'
+  },
+  {
+    id: 'goal-002',
+    agentId: 'agent-002',
+    month: 3,
+    year: 2024,
+    targetCommissionAmount: 6000,
+    createdAt: '2024-03-01T09:00:00'
+  }
+];
+
+// Notifications
+export const notifications = [
+  {
+    id: 'notif-001',
+    recipientAgentId: 'agent-001',
+    type: 'tier_changed',
+    message: 'Your commission tier was updated to Senior Agent by Drew Arrington.',
+    link: '/agent/profile',
+    isRead: true,
+    createdAt: '2024-02-01T10:00:00'
+  },
+  {
+    id: 'notif-002',
+    recipientAgentId: 'agent-001',
+    type: 'lead_assigned',
+    message: 'New lead assigned: Robert Williams',
+    link: '/agent/leads',
+    isRead: false,
+    createdAt: '2024-03-25T09:00:00'
+  },
+  {
+    id: 'notif-003',
+    recipientAgentId: 'agent-002',
+    type: 'contest_started',
+    message: 'New contest started: March Madness! Win a $500 travel voucher.',
+    link: '/agent',
+    isRead: false,
+    createdAt: '2024-03-01T08:00:00'
+  },
+  {
+    id: 'notif-004',
+    recipientAgentId: 'agent-001',
+    type: 'paid_status_changed',
+    message: 'Your sale to John Smith has been marked as paid.',
+    link: '/agent/sales',
+    isRead: false,
+    createdAt: '2024-03-26T14:00:00'
+  }
+];
+
 // Admin user
 export const adminUser = {
   id: 'admin-001',
@@ -24,6 +257,7 @@ export const agents = [
     territory: 'Alabama',
     hireDate: '2023-03-15',
     status: 'active',
+    commissionTierId: 'tier-003',
     level: 5,
     xp: 4750,
     xpToNextLevel: 5000,
@@ -42,6 +276,7 @@ export const agents = [
     territory: 'Georgia',
     hireDate: '2023-06-01',
     status: 'active',
+    commissionTierId: 'tier-002',
     level: 4,
     xp: 3200,
     xpToNextLevel: 4000,
@@ -60,6 +295,7 @@ export const agents = [
     territory: 'Florida',
     hireDate: '2023-09-10',
     status: 'active',
+    commissionTierId: 'tier-002',
     level: 3,
     xp: 2100,
     xpToNextLevel: 3000,
@@ -78,6 +314,7 @@ export const agents = [
     territory: 'Georgia',
     hireDate: '2024-01-08',
     status: 'active',
+    commissionTierId: 'tier-001',
     level: 2,
     xp: 1450,
     xpToNextLevel: 2000,
@@ -96,6 +333,7 @@ export const agents = [
     territory: 'Florida',
     hireDate: '2024-02-20',
     status: 'active',
+    commissionTierId: 'tier-001',
     level: 2,
     xp: 980,
     xpToNextLevel: 2000,
@@ -249,105 +487,9 @@ export const leads = [
   }
 ];
 
-// Closed Sales
-export const sales = [
-  {
-    id: 'sale-001',
-    clientName: 'John Smith',
-    agentId: 'agent-001',
-    productType: 'Term Life - 20 Year',
-    premium: 150,
-    coverageAmount: 500000,
-    commission: 1800,
-    closeDate: '2024-03-25',
-    status: 'active',
-    location: { lat: 33.5186, lng: -86.8104, city: 'Birmingham', state: 'AL' }
-  },
-  {
-    id: 'sale-002',
-    clientName: 'Maria Rodriguez',
-    agentId: 'agent-001',
-    productType: 'Whole Life',
-    premium: 280,
-    coverageAmount: 250000,
-    commission: 3360,
-    closeDate: '2024-03-22',
-    status: 'active',
-    location: { lat: 34.7304, lng: -86.5861, city: 'Huntsville', state: 'AL' }
-  },
-  {
-    id: 'sale-003',
-    clientName: 'Kevin Moore',
-    agentId: 'agent-002',
-    productType: 'Term Life - 30 Year',
-    premium: 200,
-    coverageAmount: 750000,
-    commission: 2400,
-    closeDate: '2024-03-24',
-    status: 'active',
-    location: { lat: 33.7490, lng: -84.3880, city: 'Atlanta', state: 'GA' }
-  },
-  {
-    id: 'sale-004',
-    clientName: 'Susan Taylor',
-    agentId: 'agent-002',
-    productType: 'Universal Life',
-    premium: 350,
-    coverageAmount: 400000,
-    commission: 4200,
-    closeDate: '2024-03-20',
-    status: 'active',
-    location: { lat: 32.0809, lng: -81.0912, city: 'Savannah', state: 'GA' }
-  },
-  {
-    id: 'sale-005',
-    clientName: 'Barbara Jackson',
-    agentId: 'agent-003',
-    productType: 'Final Expense',
-    premium: 75,
-    coverageAmount: 25000,
-    commission: 900,
-    closeDate: '2024-03-23',
-    status: 'active',
-    location: { lat: 25.7617, lng: -80.1918, city: 'Miami', state: 'FL' }
-  },
-  {
-    id: 'sale-006',
-    clientName: 'Richard White',
-    agentId: 'agent-003',
-    productType: 'Term Life - 10 Year',
-    premium: 95,
-    coverageAmount: 300000,
-    commission: 1140,
-    closeDate: '2024-03-21',
-    status: 'active',
-    location: { lat: 26.1224, lng: -80.1373, city: 'Fort Lauderdale', state: 'FL' }
-  },
-  {
-    id: 'sale-007',
-    clientName: 'Linda Martinez',
-    agentId: 'agent-004',
-    productType: 'Whole Life',
-    premium: 225,
-    coverageAmount: 200000,
-    commission: 2700,
-    closeDate: '2024-03-19',
-    status: 'active',
-    location: { lat: 33.9519, lng: -84.5470, city: 'Marietta', state: 'GA' }
-  },
-  {
-    id: 'sale-008',
-    clientName: 'William Harris',
-    agentId: 'agent-005',
-    productType: 'Term Life - 20 Year',
-    premium: 125,
-    coverageAmount: 400000,
-    commission: 1500,
-    closeDate: '2024-03-18',
-    status: 'active',
-    location: { lat: 28.5383, lng: -81.3792, city: 'Orlando', state: 'FL' }
-  }
-];
+// Closed Sales (with commission snapshots)
+// Start with empty sales - agents will log new sales
+export const sales = [];
 
 // Activity Log
 export const activities = [
@@ -769,3 +911,312 @@ export const updateApplicationStatus = (id, status) => {
     app.id === id ? { ...app, status } : app
   );
 };
+
+// Commission Tiers Store
+let commissionTiersStore = [...commissionTiers];
+
+export const getCommissionTiers = () => commissionTiersStore.filter(t => !t.archivedAt);
+
+export const getAllCommissionTiers = () => commissionTiersStore;
+
+export const getCommissionTierById = (id) => commissionTiersStore.find(t => t.id === id);
+
+export const addCommissionTier = (tier) => {
+  const newTier = {
+    ...tier,
+    id: `tier-${String(commissionTiersStore.length + 1).padStart(3, '0')}`,
+    createdAt: new Date().toISOString(),
+    archivedAt: null
+  };
+  commissionTiersStore = [...commissionTiersStore, newTier];
+  return newTier;
+};
+
+export const updateCommissionTier = (id, updates) => {
+  commissionTiersStore = commissionTiersStore.map(t =>
+    t.id === id ? { ...t, ...updates } : t
+  );
+  return commissionTiersStore.find(t => t.id === id);
+};
+
+export const archiveCommissionTier = (id) => {
+  commissionTiersStore = commissionTiersStore.map(t =>
+    t.id === id ? { ...t, archivedAt: new Date().toISOString() } : t
+  );
+};
+
+// Carriers Store
+let carriersStore = [...carriers];
+
+export const getCarriers = () => carriersStore.filter(c => c.isActive && !c.archivedAt);
+
+export const getAllCarriers = () => carriersStore;
+
+export const getCarrierById = (id) => carriersStore.find(c => c.id === id);
+
+export const addCarrier = (carrier) => {
+  const newCarrier = {
+    ...carrier,
+    id: `carrier-${String(carriersStore.length + 1).padStart(3, '0')}`,
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    archivedAt: null
+  };
+  carriersStore = [...carriersStore, newCarrier];
+  return newCarrier;
+};
+
+export const updateCarrier = (id, updates) => {
+  carriersStore = carriersStore.map(c =>
+    c.id === id ? { ...c, ...updates } : c
+  );
+  return carriersStore.find(c => c.id === id);
+};
+
+export const archiveCarrier = (id) => {
+  carriersStore = carriersStore.map(c =>
+    c.id === id ? { ...c, archivedAt: new Date().toISOString(), isActive: false } : c
+  );
+};
+
+// Agent Tier History Store
+let agentTierHistoryStore = [...agentTierHistory];
+
+export const getAgentTierHistory = (agentId) =>
+  agentTierHistoryStore.filter(h => h.agentId === agentId).sort((a, b) =>
+    new Date(b.changedAt) - new Date(a.changedAt)
+  );
+
+export const addAgentTierHistory = (entry) => {
+  const newEntry = {
+    ...entry,
+    id: `history-${String(agentTierHistoryStore.length + 1).padStart(3, '0')}`,
+    changedAt: new Date().toISOString()
+  };
+  agentTierHistoryStore = [...agentTierHistoryStore, newEntry];
+  return newEntry;
+};
+
+// Audit Log Store
+let auditLogStore = [...commissionAuditLog];
+
+export const getAuditLog = () => auditLogStore.sort((a, b) =>
+  new Date(b.changedAt) - new Date(a.changedAt)
+);
+
+export const addAuditLogEntry = (entry) => {
+  const newEntry = {
+    ...entry,
+    id: `audit-${String(auditLogStore.length + 1).padStart(3, '0')}`,
+    changedAt: new Date().toISOString()
+  };
+  auditLogStore = [...auditLogStore, newEntry];
+  return newEntry;
+};
+
+// Agents Store (for tier assignment updates)
+let agentsStore = [...agents];
+
+export const getAgents = () => agentsStore.filter(a => a.status === 'active');
+
+export const getAllAgentsWithTiers = () => agentsStore;
+
+export const getAgentById = (id) => agentsStore.find(a => a.id === id);
+
+export const updateAgentTier = (agentId, newTierId, adminId, reason = '') => {
+  const agent = agentsStore.find(a => a.id === agentId);
+  if (!agent) return null;
+
+  const previousTierId = agent.commissionTierId;
+
+  // Update agent
+  agentsStore = agentsStore.map(a =>
+    a.id === agentId ? { ...a, commissionTierId: newTierId } : a
+  );
+
+  // Add to tier history
+  addAgentTierHistory({
+    agentId,
+    previousTierId,
+    newTierId,
+    changedByAdminId: adminId,
+    reason
+  });
+
+  // Add to audit log
+  addAuditLogEntry({
+    changedByAdminId: adminId,
+    entityType: 'agent_tier_assignment',
+    entityId: agentId,
+    fieldChanged: 'commission_tier_id',
+    oldValue: previousTierId,
+    newValue: newTierId
+  });
+
+  return agentsStore.find(a => a.id === agentId);
+};
+
+// Sales Store
+let salesStore = [...sales];
+
+export const getSales = () => salesStore;
+
+export const getSalesByAgent = (agentId) => salesStore.filter(s => s.agentId === agentId);
+
+export const addSale = (sale) => {
+  const agent = getAgentById(sale.agentId);
+  const carrier = getCarrierById(sale.carrierId);
+  const tier = getCommissionTierById(agent?.commissionTierId);
+
+  // Calculate commission: annual_premium × carrier_rate × agent_multiplier
+  const annualPremium = sale.monthlyPremium * 12;
+  const carrierPayout = annualPremium * (carrier?.commissionRate || 1);
+  const agentCommission = carrierPayout * (tier?.baseMultiplier || 0.5);
+
+  const newSale = {
+    ...sale,
+    id: `sale-${String(salesStore.length + 1).padStart(3, '0')}`,
+    isPaid: false,
+    paidDate: null,
+    agentMultiplierSnapshot: tier?.baseMultiplier || 0.5,
+    carrierRateSnapshot: carrier?.commissionRate || 1,
+    commissionTierIdSnapshot: agent?.commissionTierId || 'tier-001',
+    commission: Math.round(agentCommission * 100) / 100,
+    createdAt: new Date().toISOString()
+  };
+
+  salesStore = [...salesStore, newSale];
+  return newSale;
+};
+
+export const updateSalePaidStatus = (saleId, isPaid) => {
+  salesStore = salesStore.map(s =>
+    s.id === saleId ? {
+      ...s,
+      isPaid,
+      paidDate: isPaid ? new Date().toISOString().split('T')[0] : null
+    } : s
+  );
+  return salesStore.find(s => s.id === saleId);
+};
+
+// Contests Store
+let contestsStore = [...contests];
+
+export const getActiveContests = () => contestsStore.filter(c => c.isActive);
+
+export const getAllContests = () => contestsStore;
+
+export const addContest = (contest) => {
+  const newContest = {
+    ...contest,
+    id: `contest-${String(contestsStore.length + 1).padStart(3, '0')}`,
+    isActive: true,
+    winnerAgentId: null,
+    createdAt: new Date().toISOString()
+  };
+  contestsStore = [...contestsStore, newContest];
+  return newContest;
+};
+
+export const updateContest = (id, updates) => {
+  contestsStore = contestsStore.map(c =>
+    c.id === id ? { ...c, ...updates } : c
+  );
+  return contestsStore.find(c => c.id === id);
+};
+
+// Goals Store
+let goalsStore = [...agentGoals];
+
+export const getAgentGoal = (agentId, month, year) =>
+  goalsStore.find(g => g.agentId === agentId && g.month === month && g.year === year);
+
+export const setAgentGoal = (agentId, month, year, targetCommissionAmount) => {
+  const existing = getAgentGoal(agentId, month, year);
+  if (existing) {
+    goalsStore = goalsStore.map(g =>
+      g.id === existing.id ? { ...g, targetCommissionAmount } : g
+    );
+    return goalsStore.find(g => g.id === existing.id);
+  } else {
+    const newGoal = {
+      id: `goal-${String(goalsStore.length + 1).padStart(3, '0')}`,
+      agentId,
+      month,
+      year,
+      targetCommissionAmount,
+      createdAt: new Date().toISOString()
+    };
+    goalsStore = [...goalsStore, newGoal];
+    return newGoal;
+  }
+};
+
+// Notifications Store
+let notificationsStore = [...notifications];
+
+export const getNotifications = (agentId) =>
+  notificationsStore.filter(n => n.recipientAgentId === agentId)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+export const getUnreadNotificationCount = (agentId) =>
+  notificationsStore.filter(n => n.recipientAgentId === agentId && !n.isRead).length;
+
+export const addNotification = (notification) => {
+  const newNotification = {
+    ...notification,
+    id: `notif-${String(notificationsStore.length + 1).padStart(3, '0')}`,
+    isRead: false,
+    createdAt: new Date().toISOString()
+  };
+  notificationsStore = [...notificationsStore, newNotification];
+  return newNotification;
+};
+
+export const markNotificationRead = (notificationId) => {
+  notificationsStore = notificationsStore.map(n =>
+    n.id === notificationId ? { ...n, isRead: true } : n
+  );
+};
+
+export const markAllNotificationsRead = (agentId) => {
+  notificationsStore = notificationsStore.map(n =>
+    n.recipientAgentId === agentId ? { ...n, isRead: true } : n
+  );
+};
+
+// Helper: Get agent's tier info
+export const getAgentTierInfo = (agentId) => {
+  const agent = getAgentById(agentId);
+  if (!agent) return null;
+  const tier = getCommissionTierById(agent.commissionTierId);
+  return tier;
+};
+
+// Helper: Calculate commission for a potential sale
+export const calculateCommission = (monthlyPremium, carrierId, agentId) => {
+  const carrier = getCarrierById(carrierId);
+  const agent = getAgentById(agentId);
+  const tier = getCommissionTierById(agent?.commissionTierId);
+
+  const annualPremium = monthlyPremium * 12;
+  const carrierPayout = annualPremium * (carrier?.commissionRate || 1);
+  const agentCommission = carrierPayout * (tier?.baseMultiplier || 0.5);
+  const adminOverride = carrierPayout - agentCommission;
+
+  return {
+    annualPremium,
+    carrierPayout: Math.round(carrierPayout * 100) / 100,
+    agentCommission: Math.round(agentCommission * 100) / 100,
+    adminOverride: Math.round(adminOverride * 100) / 100,
+    tierName: tier?.name || 'Unknown',
+    tierMultiplier: tier?.baseMultiplier || 0.5,
+    carrierRate: carrier?.commissionRate || 1,
+    carrierName: carrier?.name || 'Unknown'
+  };
+};
+
+// Helper: Get agents count per tier
+export const getAgentCountByTier = (tierId) =>
+  agentsStore.filter(a => a.commissionTierId === tierId && a.status === 'active').length;
