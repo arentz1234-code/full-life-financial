@@ -1,93 +1,10 @@
 // Mock Data for Full Life Financial
 
-// Commission Tiers
-export const commissionTiers = [
-  {
-    id: 'tier-001',
-    name: 'New Hire',
-    baseMultiplier: 0.50,
-    notes: 'Starting tier for new agents in training period',
-    createdAt: '2024-01-01T00:00:00',
-    createdByAdminId: 'admin-001',
-    archivedAt: null
-  },
-  {
-    id: 'tier-002',
-    name: 'Buys Own Leads',
-    baseMultiplier: 0.60,
-    notes: 'Agents who purchase their own leads receive higher commission',
-    createdAt: '2024-01-01T00:00:00',
-    createdByAdminId: 'admin-001',
-    archivedAt: null
-  },
-  {
-    id: 'tier-003',
-    name: 'Senior Agent',
-    baseMultiplier: 0.70,
-    notes: 'Agents with 2+ years experience and consistent performance',
-    createdAt: '2024-01-01T00:00:00',
-    createdByAdminId: 'admin-001',
-    archivedAt: null
-  },
-  {
-    id: 'tier-004',
-    name: 'Top Producer',
-    baseMultiplier: 0.80,
-    notes: 'Elite agents with proven track record of high production',
-    createdAt: '2024-01-01T00:00:00',
-    createdByAdminId: 'admin-001',
-    archivedAt: null
-  }
-];
+// Commission Tiers - add via admin panel
+export const commissionTiers = [];
 
-// Carriers with commission rates
-export const carriers = [
-  {
-    id: 'carrier-001',
-    name: 'Mutual of Omaha',
-    commissionRate: 1.10,
-    notes: 'Primary final expense carrier',
-    isActive: true,
-    createdAt: '2024-01-01T00:00:00',
-    archivedAt: null
-  },
-  {
-    id: 'carrier-002',
-    name: 'AIG',
-    commissionRate: 1.15,
-    notes: 'Term and whole life products',
-    isActive: true,
-    createdAt: '2024-01-01T00:00:00',
-    archivedAt: null
-  },
-  {
-    id: 'carrier-003',
-    name: 'Transamerica',
-    commissionRate: 1.20,
-    notes: 'Universal life specialty',
-    isActive: true,
-    createdAt: '2024-01-01T00:00:00',
-    archivedAt: null
-  },
-  {
-    id: 'carrier-004',
-    name: 'Foresters Financial',
-    commissionRate: 1.05,
-    notes: 'Final expense and small whole life',
-    isActive: true,
-    createdAt: '2024-01-01T00:00:00',
-    archivedAt: null
-  },
-  {
-    id: 'carrier-005',
-    name: 'Liberty Bankers',
-    commissionRate: 1.25,
-    notes: 'High commission final expense',
-    isActive: true,
-    createdAt: '2024-01-01T00:00:00',
-    archivedAt: null
-  }
-];
+// Carriers - add via admin panel
+export const carriers = [];
 
 // Agent Tier History (tracks all tier assignments)
 export const agentTierHistory = [];
@@ -104,19 +21,35 @@ export const agentGoals = [];
 // Notifications
 export const notifications = [];
 
-// Admin user
+// Admin user - update with your info
 export const adminUser = {
   id: 'admin-001',
-  name: 'Drew Arrington',
-  email: 'drew@fulllifefinancial.com',
+  name: 'Admin',
+  email: 'admin@fulllifefinancial.com',
   password: 'admin123',
   role: 'admin',
-  avatar: 'DA',
-  title: 'Sales Manager'
+  avatar: 'AD',
+  title: 'Administrator'
 };
 
-// Sales Agents - start fresh, add agents via admin panel
-export const agents = [];
+// Sales Agents - demo agent for testing
+export const agents = [
+  {
+    id: 'agent-001',
+    name: 'Demo Agent',
+    email: 'agent@demo.com',
+    password: 'demo123',
+    phone: '(555) 123-4567',
+    territory: 'Alabama',
+    commissionTierId: 'tier-001',
+    avatar: 'DA',
+    status: 'active',
+    level: 1,
+    badges: [],
+    streak: 0,
+    hireDate: '2024-01-01'
+  }
+];
 
 // Badge definitions - icon names map to Lucide icons
 export const badges = {
@@ -146,162 +79,34 @@ export const monthlyPerformance = [];
 // Agent Performance Data
 export const agentPerformance = [];
 
-// Product Distribution
-export const productDistribution = [
-  { name: 'Term Life', value: 45, color: '#1B5E20' },
-  { name: 'Whole Life', value: 28, color: '#4CAF50' },
-  { name: 'Universal Life', value: 15, color: '#81C784' },
-  { name: 'Final Expense', value: 12, color: '#D4A853' }
-];
+// Product Distribution - populated from actual sales
+export const productDistribution = [];
 
-// Lead Sources
-export const leadSources = [
-  { name: 'Website', value: 35, color: '#1B5E20' },
-  { name: 'Referrals', value: 30, color: '#D4A853' },
-  { name: 'Cold Calls', value: 20, color: '#4CAF50' },
-  { name: 'Social Media', value: 10, color: '#81C784' },
-  { name: 'Trade Shows', value: 5, color: '#A5D6A7' }
-];
+// Lead Sources - populated from actual leads
+export const leadSources = [];
 
-// Goals
+// Goals - set via admin panel
 export const goals = {
   monthly: {
-    sales: { target: 25, current: 22 },
-    revenue: { target: 40000, current: 35000 },
-    leads: { target: 80, current: 65 },
-    calls: { target: 500, current: 425 }
+    sales: { target: 0, current: 0 },
+    revenue: { target: 0, current: 0 },
+    leads: { target: 0, current: 0 },
+    calls: { target: 0, current: 0 }
   },
   quarterly: {
-    sales: { target: 75, current: 55 },
-    revenue: { target: 120000, current: 85500 }
+    sales: { target: 0, current: 0 },
+    revenue: { target: 0, current: 0 }
   }
 };
 
-// Testimonials
-export const testimonials = [
-  {
-    id: 1,
-    name: 'Michael Thompson',
-    location: 'Atlanta, GA',
-    text: "Full Life Financial made getting life insurance so easy. My agent Marcus was incredibly helpful and found me a policy that fits my budget perfectly. Now I have peace of mind knowing my family is protected.",
-    rating: 5,
-    product: 'Term Life Insurance'
-  },
-  {
-    id: 2,
-    name: 'Sandra Williams',
-    location: 'Birmingham, AL',
-    text: "I was hesitant about life insurance, but Sarah at Full Life took the time to explain everything. She helped me understand the importance of whole life insurance and how it can be part of my financial plan.",
-    rating: 5,
-    product: 'Whole Life Insurance'
-  },
-  {
-    id: 3,
-    name: 'Robert Chen',
-    location: 'Miami, FL',
-    text: "After my health scare, I knew I needed to protect my family. Jennifer was compassionate and efficient. She found me coverage even with my medical history. I can't thank Full Life enough.",
-    rating: 5,
-    product: 'Term Life Insurance'
-  },
-  {
-    id: 4,
-    name: 'Patricia Davis',
-    location: 'Tampa, FL',
-    text: "Planning for end-of-life expenses was difficult, but Full Life Financial made it dignified and simple. My final expense policy gives me and my children peace of mind.",
-    rating: 5,
-    product: 'Final Expense Insurance'
-  }
-];
+// Testimonials - add real customer testimonials
+export const testimonials = [];
 
-// Insurance Products
-export const products = [
-  {
-    id: 'term-life',
-    name: 'Term Life Insurance',
-    description: 'Affordable coverage for a specific period (10, 20, or 30 years). Perfect for young families or those with temporary needs.',
-    features: [
-      'Lowest premiums for highest coverage',
-      'Fixed rates for the entire term',
-      'Coverage amounts from $100K to $2M+',
-      'Convertible to permanent insurance'
-    ],
-    idealFor: 'Young families, mortgage protection, income replacement',
-    startingAt: '$15/month'
-  },
-  {
-    id: 'whole-life',
-    name: 'Whole Life Insurance',
-    description: 'Permanent coverage that builds cash value over time. Provides lifelong protection with guaranteed benefits.',
-    features: [
-      'Lifetime coverage guaranteed',
-      'Builds tax-deferred cash value',
-      'Fixed premiums never increase',
-      'Dividend potential with participating policies'
-    ],
-    idealFor: 'Estate planning, legacy building, long-term financial goals',
-    startingAt: '$75/month'
-  },
-  {
-    id: 'universal-life',
-    name: 'Universal Life Insurance',
-    description: 'Flexible permanent insurance with adjustable premiums and death benefits. Offers investment growth potential.',
-    features: [
-      'Flexible premium payments',
-      'Adjustable death benefit',
-      'Cash value accumulation',
-      'Interest rate options'
-    ],
-    idealFor: 'Changing financial situations, wealth accumulation, flexibility needs',
-    startingAt: '$100/month'
-  },
-  {
-    id: 'final-expense',
-    name: 'Final Expense Insurance',
-    description: 'Smaller whole life policies designed to cover funeral costs and final expenses. Simplified underwriting available.',
-    features: [
-      'No medical exam required',
-      'Quick approval process',
-      'Coverage from $5K to $50K',
-      'Premiums never increase'
-    ],
-    idealFor: 'Seniors, those with health issues, funeral cost coverage',
-    startingAt: '$25/month'
-  }
-];
+// Insurance Products - configure your product offerings
+export const products = [];
 
-// Career Benefits
-export const careerBenefits = [
-  {
-    icon: 'DollarSign',
-    title: 'Unlimited Earning Potential',
-    description: 'Competitive commission structure with no cap on earnings. Top performers earn $100K+ annually.'
-  },
-  {
-    icon: 'Clock',
-    title: 'Flexible Schedule',
-    description: 'Set your own hours and work-life balance. Build your business on your terms.'
-  },
-  {
-    icon: 'GraduationCap',
-    title: 'Comprehensive Training',
-    description: 'Full licensing support, sales training, and ongoing professional development.'
-  },
-  {
-    icon: 'Users',
-    title: 'Supportive Team Culture',
-    description: 'Join a team that celebrates success and supports your growth every step of the way.'
-  },
-  {
-    icon: 'TrendingUp',
-    title: 'Career Advancement',
-    description: 'Clear path to management and leadership roles. Grow your own team.'
-  },
-  {
-    icon: 'Heart',
-    title: 'Meaningful Work',
-    description: 'Help families protect their futures. Make a real difference in people\'s lives.'
-  }
-];
+// Career Benefits - configure career page content
+export const careerBenefits = [];
 
 // Helper function to get agent stats
 export const getAgentStats = (agentId) => {
