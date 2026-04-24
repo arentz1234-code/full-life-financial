@@ -10,7 +10,8 @@ import {
   updateAgentTier,
   getAgentTierHistory,
   adminUser,
-  addNotification
+  addNotification,
+  addAgent
 } from '../../data/mockData'
 import { exportAgents } from '../../utils/exportToExcel'
 import './AdminAgents.css'
@@ -65,7 +66,8 @@ function AdminAgents() {
 
   const handleAddAgent = (e) => {
     e.preventDefault()
-    alert(`Agent ${newAgent.name} would be added with tier ${newAgent.commissionTierId}!`)
+    addAgent(newAgent)
+    refreshAgents()
     setShowAddModal(false)
     setNewAgent({ name: '', email: '', phone: '', territory: 'Alabama', commissionTierId: '' })
   }

@@ -488,6 +488,26 @@ export const getAllAgentsWithTiers = () => agentsStore;
 
 export const getAgentById = (id) => agentsStore.find(a => a.id === id);
 
+export const addAgent = (agent) => {
+  const initials = agent.name.split(' ').map(n => n[0]).join('').toUpperCase();
+  const newAgent = {
+    id: `agent-${String(agentsStore.length + 1).padStart(3, '0')}`,
+    name: agent.name,
+    email: agent.email,
+    phone: agent.phone || '',
+    territory: agent.territory,
+    commissionTierId: agent.commissionTierId,
+    avatar: initials,
+    status: 'active',
+    level: 1,
+    badges: [],
+    streak: 0,
+    hireDate: new Date().toISOString().split('T')[0]
+  };
+  agentsStore = [...agentsStore, newAgent];
+  return newAgent;
+};
+
 export const updateAgentTier = (agentId, newTierId, adminId, reason = '') => {
   const agent = agentsStore.find(a => a.id === agentId);
   if (!agent) return null;
