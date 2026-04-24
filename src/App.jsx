@@ -1,4 +1,6 @@
+import { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { testConnection } from './lib/testConnection'
 import './App.css'
 
 // Public Pages
@@ -37,6 +39,10 @@ import PublicLayout from './layouts/PublicLayout'
 import DashboardLayout from './layouts/DashboardLayout'
 
 function App() {
+  useEffect(() => {
+    testConnection()
+  }, [])
+
   return (
     <Router>
       <Routes>
