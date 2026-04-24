@@ -22,7 +22,7 @@ function AgentSales() {
   const [newSale, setNewSale] = useState({
     clientName: '',
     clientPhone: '',
-    carrierId: carriers[0]?.id || '',
+    carrierId: '',
     monthlyPremium: '',
     coverageAmount: '',
     notes: ''
@@ -76,7 +76,7 @@ function AgentSales() {
     setNewSale({
       clientName: '',
       clientPhone: '',
-      carrierId: carriers[0]?.id || '',
+      carrierId: '',
       monthlyPremium: '',
       coverageAmount: '',
       notes: ''
@@ -264,12 +264,16 @@ function AgentSales() {
                   onChange={(e) => setNewSale({ ...newSale, carrierId: e.target.value })}
                   required
                 >
+                  <option value="">Select a carrier...</option>
                   {carriers.map(carrier => (
                     <option key={carrier.id} value={carrier.id}>
                       {carrier.name} ({(carrier.commissionRate * 100).toFixed(0)}% rate)
                     </option>
                   ))}
                 </select>
+                {carriers.length === 0 && (
+                  <span className="form-hint error">No carriers configured. Ask admin to add carriers.</span>
+                )}
               </div>
 
               <div className="form-group">

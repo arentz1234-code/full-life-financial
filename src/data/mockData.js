@@ -1,10 +1,75 @@
 // Mock Data for Full Life Financial
 
-// Commission Tiers - add via admin panel
-export const commissionTiers = [];
+// Commission Tiers - default tiers for the business
+export const commissionTiers = [
+  {
+    id: 'tier-001',
+    name: 'New Hire',
+    baseMultiplier: 0.50,
+    notes: 'Starting tier for new agents',
+    createdAt: new Date().toISOString(),
+    createdByAdminId: 'admin-001',
+    archivedAt: null
+  },
+  {
+    id: 'tier-002',
+    name: 'Buys Own Leads',
+    baseMultiplier: 0.60,
+    notes: 'Agents who purchase their own leads',
+    createdAt: new Date().toISOString(),
+    createdByAdminId: 'admin-001',
+    archivedAt: null
+  },
+  {
+    id: 'tier-003',
+    name: 'Senior Agent',
+    baseMultiplier: 0.70,
+    notes: 'Experienced agents with consistent performance',
+    createdAt: new Date().toISOString(),
+    createdByAdminId: 'admin-001',
+    archivedAt: null
+  },
+  {
+    id: 'tier-004',
+    name: 'Top Producer',
+    baseMultiplier: 0.80,
+    notes: 'Elite agents with high production',
+    createdAt: new Date().toISOString(),
+    createdByAdminId: 'admin-001',
+    archivedAt: null
+  }
+];
 
-// Carriers - add via admin panel
-export const carriers = [];
+// Carriers - insurance company partners
+export const carriers = [
+  {
+    id: 'carrier-001',
+    name: 'Mutual of Omaha',
+    commissionRate: 1.10,
+    notes: 'Final expense carrier',
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    archivedAt: null
+  },
+  {
+    id: 'carrier-002',
+    name: 'AIG',
+    commissionRate: 1.15,
+    notes: 'Term and whole life',
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    archivedAt: null
+  },
+  {
+    id: 'carrier-003',
+    name: 'Transamerica',
+    commissionRate: 1.20,
+    notes: 'Universal life',
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    archivedAt: null
+  }
+];
 
 // Agent Tier History (tracks all tier assignments)
 export const agentTierHistory = [];
