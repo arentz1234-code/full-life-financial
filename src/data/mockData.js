@@ -90,148 +90,19 @@ export const carriers = [
 ];
 
 // Agent Tier History (tracks all tier assignments)
-export const agentTierHistory = [
-  {
-    id: 'history-001',
-    agentId: 'agent-001',
-    previousTierId: 'tier-001',
-    newTierId: 'tier-003',
-    changedByAdminId: 'admin-001',
-    changedAt: '2024-02-01T10:00:00',
-    reason: 'Promoted after excellent Q4 performance'
-  },
-  {
-    id: 'history-002',
-    agentId: 'agent-002',
-    previousTierId: 'tier-001',
-    newTierId: 'tier-002',
-    changedByAdminId: 'admin-001',
-    changedAt: '2024-01-15T14:30:00',
-    reason: 'Agent now purchasing own leads'
-  }
-];
+export const agentTierHistory = [];
 
 // Commission Audit Log
-export const commissionAuditLog = [
-  {
-    id: 'audit-001',
-    changedByAdminId: 'admin-001',
-    entityType: 'tier',
-    entityId: 'tier-003',
-    fieldChanged: 'baseMultiplier',
-    oldValue: '0.65',
-    newValue: '0.70',
-    changedAt: '2024-02-15T09:00:00'
-  },
-  {
-    id: 'audit-002',
-    changedByAdminId: 'admin-001',
-    entityType: 'agent_tier_assignment',
-    entityId: 'agent-001',
-    fieldChanged: 'commission_tier_id',
-    oldValue: 'tier-001',
-    newValue: 'tier-003',
-    changedAt: '2024-02-01T10:00:00'
-  },
-  {
-    id: 'audit-003',
-    changedByAdminId: 'admin-001',
-    entityType: 'carrier',
-    entityId: 'carrier-005',
-    fieldChanged: 'commissionRate',
-    oldValue: '1.20',
-    newValue: '1.25',
-    changedAt: '2024-03-01T11:30:00'
-  }
-];
+export const commissionAuditLog = [];
 
 // Contests
-export const contests = [
-  {
-    id: 'contest-001',
-    name: 'March Madness',
-    description: 'Highest total premium wins a weekend getaway!',
-    startDate: '2024-03-01',
-    endDate: '2024-03-31',
-    prizeDescription: '$500 travel voucher',
-    metric: 'total_premium',
-    isActive: true,
-    winnerAgentId: null,
-    createdAt: '2024-02-25T10:00:00'
-  },
-  {
-    id: 'contest-002',
-    name: 'Policy Sprint',
-    description: 'Most policies written this week wins!',
-    startDate: '2024-03-25',
-    endDate: '2024-03-31',
-    prizeDescription: '$200 bonus',
-    metric: 'policy_count',
-    isActive: true,
-    winnerAgentId: null,
-    createdAt: '2024-03-24T09:00:00'
-  }
-];
+export const contests = [];
 
 // Agent Goals
-export const agentGoals = [
-  {
-    id: 'goal-001',
-    agentId: 'agent-001',
-    month: 3,
-    year: 2024,
-    targetCommissionAmount: 8000,
-    createdAt: '2024-03-01T08:00:00'
-  },
-  {
-    id: 'goal-002',
-    agentId: 'agent-002',
-    month: 3,
-    year: 2024,
-    targetCommissionAmount: 6000,
-    createdAt: '2024-03-01T09:00:00'
-  }
-];
+export const agentGoals = [];
 
 // Notifications
-export const notifications = [
-  {
-    id: 'notif-001',
-    recipientAgentId: 'agent-001',
-    type: 'tier_changed',
-    message: 'Your commission tier was updated to Senior Agent by Drew Arrington.',
-    link: '/agent/profile',
-    isRead: true,
-    createdAt: '2024-02-01T10:00:00'
-  },
-  {
-    id: 'notif-002',
-    recipientAgentId: 'agent-001',
-    type: 'lead_assigned',
-    message: 'New lead assigned: Robert Williams',
-    link: '/agent/leads',
-    isRead: false,
-    createdAt: '2024-03-25T09:00:00'
-  },
-  {
-    id: 'notif-003',
-    recipientAgentId: 'agent-002',
-    type: 'contest_started',
-    message: 'New contest started: March Madness! Win a $500 travel voucher.',
-    link: '/agent',
-    isRead: false,
-    createdAt: '2024-03-01T08:00:00'
-  },
-  {
-    id: 'notif-004',
-    recipientAgentId: 'agent-001',
-    type: 'paid_status_changed',
-    message: 'Your sale to John Smith has been marked as paid.',
-    link: '/agent/sales',
-    isRead: false,
-    createdAt: '2024-03-26T14:00:00'
-  }
-];
+export const notifications = [];
 
 // Admin user
 export const adminUser = {
@@ -260,170 +131,20 @@ export const badges = {
 };
 
 // Leads
-export const leads = [
-  {
-    id: 'lead-001',
-    name: 'Robert Williams',
-    email: 'robert.w@email.com',
-    phone: '(205) 555-0123',
-    age: 42,
-    status: 'hot',
-    source: 'Website',
-    productInterest: 'Term Life',
-    estimatedValue: 1200,
-    assignedTo: 'agent-001',
-    createdAt: '2024-03-20',
-    lastContact: '2024-03-25',
-    notes: 'Very interested, has two kids. Wants 20-year term.',
-    location: { lat: 33.5186, lng: -86.8104, city: 'Birmingham', state: 'AL' }
-  },
-  {
-    id: 'lead-002',
-    name: 'Michelle Davis',
-    email: 'michelle.d@email.com',
-    phone: '(404) 555-0187',
-    age: 35,
-    status: 'warm',
-    source: 'Referral',
-    productInterest: 'Whole Life',
-    estimatedValue: 2500,
-    assignedTo: 'agent-002',
-    createdAt: '2024-03-18',
-    lastContact: '2024-03-24',
-    notes: 'Referred by her brother. Looking for long-term investment.',
-    location: { lat: 33.7490, lng: -84.3880, city: 'Atlanta', state: 'GA' }
-  },
-  {
-    id: 'lead-003',
-    name: 'James Anderson',
-    email: 'james.a@email.com',
-    phone: '(305) 555-0156',
-    age: 55,
-    status: 'hot',
-    source: 'Cold Call',
-    productInterest: 'Final Expense',
-    estimatedValue: 800,
-    assignedTo: 'agent-003',
-    createdAt: '2024-03-22',
-    lastContact: '2024-03-26',
-    notes: 'Wants to ensure family is covered. Ready to sign.',
-    location: { lat: 25.7617, lng: -80.1918, city: 'Miami', state: 'FL' }
-  },
-  {
-    id: 'lead-004',
-    name: 'Patricia Brown',
-    email: 'patricia.b@email.com',
-    phone: '(770) 555-0134',
-    age: 38,
-    status: 'cold',
-    source: 'Website',
-    productInterest: 'Universal Life',
-    estimatedValue: 3000,
-    assignedTo: 'agent-004',
-    createdAt: '2024-03-15',
-    lastContact: '2024-03-19',
-    notes: 'Initial interest but hard to reach. Follow up needed.',
-    location: { lat: 33.9519, lng: -84.5470, city: 'Marietta', state: 'GA' }
-  },
-  {
-    id: 'lead-005',
-    name: 'Thomas Garcia',
-    email: 'thomas.g@email.com',
-    phone: '(813) 555-0145',
-    age: 29,
-    status: 'warm',
-    source: 'Social Media',
-    productInterest: 'Term Life',
-    estimatedValue: 900,
-    assignedTo: 'agent-005',
-    createdAt: '2024-03-21',
-    lastContact: '2024-03-25',
-    notes: 'Young professional, just got married. Budget conscious.',
-    location: { lat: 27.9506, lng: -82.4572, city: 'Tampa', state: 'FL' }
-  },
-  {
-    id: 'lead-006',
-    name: 'Elizabeth Martin',
-    email: 'elizabeth.m@email.com',
-    phone: '(256) 555-0178',
-    age: 48,
-    status: 'hot',
-    source: 'Referral',
-    productInterest: 'Whole Life',
-    estimatedValue: 2200,
-    assignedTo: 'agent-001',
-    createdAt: '2024-03-23',
-    lastContact: '2024-03-26',
-    notes: 'Business owner, wants policy for estate planning.',
-    location: { lat: 34.7304, lng: -86.5861, city: 'Huntsville', state: 'AL' }
-  },
-  {
-    id: 'lead-007',
-    name: 'Christopher Lee',
-    email: 'chris.lee@email.com',
-    phone: '(404) 555-0192',
-    age: 33,
-    status: 'warm',
-    source: 'Website',
-    productInterest: 'Term Life',
-    estimatedValue: 1100,
-    assignedTo: 'agent-002',
-    createdAt: '2024-03-24',
-    lastContact: '2024-03-26',
-    notes: 'Has existing policy, looking to upgrade coverage.',
-    location: { lat: 33.8823, lng: -84.4661, city: 'Sandy Springs', state: 'GA' }
-  },
-  {
-    id: 'lead-008',
-    name: 'Nancy Wilson',
-    email: 'nancy.w@email.com',
-    phone: '(850) 555-0123',
-    age: 52,
-    status: 'cold',
-    source: 'Trade Show',
-    productInterest: 'Final Expense',
-    estimatedValue: 750,
-    assignedTo: 'agent-003',
-    createdAt: '2024-03-10',
-    lastContact: '2024-03-14',
-    notes: 'Met at local expo. Needs follow-up.',
-    location: { lat: 30.4383, lng: -84.2807, city: 'Tallahassee', state: 'FL' }
-  }
-];
+export const leads = [];
 
 // Closed Sales (with commission snapshots)
 // Start with empty sales - agents will log new sales
 export const sales = [];
 
 // Activity Log
-export const activities = [
-  { id: 1, agentId: 'agent-001', type: 'call', description: 'Called Robert Williams', timestamp: '2024-03-26T09:30:00' },
-  { id: 2, agentId: 'agent-001', type: 'meeting', description: 'Meeting with Elizabeth Martin', timestamp: '2024-03-26T11:00:00' },
-  { id: 3, agentId: 'agent-002', type: 'quote', description: 'Sent quote to Michelle Davis', timestamp: '2024-03-26T10:15:00' },
-  { id: 4, agentId: 'agent-002', type: 'call', description: 'Follow-up call with Christopher Lee', timestamp: '2024-03-26T14:00:00' },
-  { id: 5, agentId: 'agent-003', type: 'close', description: 'Closed deal with James Anderson', timestamp: '2024-03-26T15:30:00' },
-  { id: 6, agentId: 'agent-004', type: 'call', description: 'Cold call to new prospect', timestamp: '2024-03-26T09:00:00' },
-  { id: 7, agentId: 'agent-005', type: 'email', description: 'Sent follow-up email to Thomas Garcia', timestamp: '2024-03-26T13:00:00' }
-];
+export const activities = [];
 
 // Monthly Performance Data
-export const monthlyPerformance = [
-  { month: 'Oct', sales: 12, revenue: 18500, leads: 45 },
-  { month: 'Nov', sales: 15, revenue: 22000, leads: 52 },
-  { month: 'Dec', sales: 18, revenue: 28500, leads: 48 },
-  { month: 'Jan', sales: 14, revenue: 21000, leads: 55 },
-  { month: 'Feb', sales: 20, revenue: 32000, leads: 60 },
-  { month: 'Mar', sales: 22, revenue: 35000, leads: 65 }
-];
+export const monthlyPerformance = [];
 
 // Agent Performance Data
-export const agentPerformance = [
-  { name: 'Sarah M.', sales: 8, revenue: 12500, closeRate: 35, calls: 120 },
-  { name: 'Marcus J.', sales: 6, revenue: 9800, closeRate: 28, calls: 95 },
-  { name: 'Jennifer C.', sales: 4, revenue: 6200, closeRate: 24, calls: 85 },
-  { name: 'David T.', sales: 3, revenue: 4500, closeRate: 20, calls: 70 },
-  { name: 'Amanda R.', sales: 2, revenue: 2800, closeRate: 18, calls: 55 }
-];
+export const agentPerformance = [];
 
 // Product Distribution
 export const productDistribution = [
@@ -609,110 +330,7 @@ export const getAllStats = () => {
 };
 
 // Insurance Policy Applications (customer applications for life insurance)
-export const policyApplications = [
-  {
-    id: 'pol-001',
-    firstName: 'Robert',
-    lastName: 'Williams',
-    email: 'robert.w@email.com',
-    phone: '(205) 555-0123',
-    age: 42,
-    productType: 'Term Life - 20 Year',
-    coverageAmount: 500000,
-    monthlyBudget: 150,
-    healthStatus: 'good',
-    smoker: false,
-    assignedAgent: 'agent-001',
-    submittedAt: '2024-03-25T10:30:00',
-    status: 'pending',
-    notes: 'Has two kids, wants coverage until they finish college'
-  },
-  {
-    id: 'pol-002',
-    firstName: 'Michelle',
-    lastName: 'Davis',
-    email: 'michelle.d@email.com',
-    phone: '(404) 555-0187',
-    age: 35,
-    productType: 'Whole Life',
-    coverageAmount: 250000,
-    monthlyBudget: 280,
-    healthStatus: 'excellent',
-    smoker: false,
-    assignedAgent: 'agent-002',
-    submittedAt: '2024-03-24T14:15:00',
-    status: 'under_review',
-    notes: 'Looking for long-term investment + protection'
-  },
-  {
-    id: 'pol-003',
-    firstName: 'James',
-    lastName: 'Anderson',
-    email: 'james.a@email.com',
-    phone: '(305) 555-0156',
-    age: 55,
-    productType: 'Final Expense',
-    coverageAmount: 25000,
-    monthlyBudget: 75,
-    healthStatus: 'fair',
-    smoker: false,
-    assignedAgent: 'agent-003',
-    submittedAt: '2024-03-23T09:00:00',
-    status: 'approved',
-    notes: 'Wants to cover funeral expenses for family'
-  },
-  {
-    id: 'pol-004',
-    firstName: 'Patricia',
-    lastName: 'Brown',
-    email: 'patricia.b@email.com',
-    phone: '(770) 555-0134',
-    age: 38,
-    productType: 'Universal Life',
-    coverageAmount: 400000,
-    monthlyBudget: 350,
-    healthStatus: 'good',
-    smoker: false,
-    assignedAgent: 'agent-004',
-    submittedAt: '2024-03-22T16:45:00',
-    status: 'pending',
-    notes: 'Interested in flexible premium options'
-  },
-  {
-    id: 'pol-005',
-    firstName: 'Thomas',
-    lastName: 'Garcia',
-    email: 'thomas.g@email.com',
-    phone: '(813) 555-0145',
-    age: 29,
-    productType: 'Term Life - 30 Year',
-    coverageAmount: 750000,
-    monthlyBudget: 100,
-    healthStatus: 'excellent',
-    smoker: false,
-    assignedAgent: 'agent-005',
-    submittedAt: '2024-03-21T11:30:00',
-    status: 'documents_needed',
-    notes: 'Just got married, budget conscious'
-  },
-  {
-    id: 'pol-006',
-    firstName: 'Elizabeth',
-    lastName: 'Martin',
-    email: 'elizabeth.m@email.com',
-    phone: '(256) 555-0178',
-    age: 48,
-    productType: 'Whole Life',
-    coverageAmount: 500000,
-    monthlyBudget: 400,
-    healthStatus: 'good',
-    smoker: false,
-    assignedAgent: 'agent-001',
-    submittedAt: '2024-03-20T13:00:00',
-    status: 'approved',
-    notes: 'Business owner, estate planning purposes'
-  }
-];
+export const policyApplications = [];
 
 let policyApplicationsStore = [...policyApplications];
 
@@ -734,65 +352,8 @@ export const getAgentPolicyApplications = (agentId) => {
   return policyApplicationsStore.filter(app => app.assignedAgent === agentId);
 };
 
-// Job Applications (mock data for demo)
-export const applications = [
-  {
-    id: 'app-001',
-    firstName: 'Michael',
-    lastName: 'Roberts',
-    email: 'michael.roberts@email.com',
-    phone: '(205) 555-0198',
-    experience: '3-5',
-    licensed: 'yes',
-    message: 'I have 4 years of experience in automotive sales and recently obtained my life insurance license. I am eager to transition to a career where I can help families plan for their future.',
-    submittedAt: '2024-03-25T14:30:00',
-    status: 'new',
-    resumeName: 'michael_roberts_resume.pdf',
-    resumeData: null
-  },
-  {
-    id: 'app-002',
-    firstName: 'Jennifer',
-    lastName: 'Adams',
-    email: 'jennifer.adams@email.com',
-    phone: '(404) 555-0167',
-    experience: 'none',
-    licensed: 'no',
-    message: 'I am a recent college graduate with a degree in Business Administration. I am highly motivated and looking for a career with growth potential. I am willing to obtain my license.',
-    submittedAt: '2024-03-24T09:15:00',
-    status: 'reviewed',
-    resumeName: 'jennifer_adams_cv.pdf',
-    resumeData: null
-  },
-  {
-    id: 'app-003',
-    firstName: 'David',
-    lastName: 'Chen',
-    email: 'david.chen@email.com',
-    phone: '(305) 555-0145',
-    experience: '1-2',
-    licensed: 'in-progress',
-    message: 'Currently working on my insurance license. I have experience in retail management and am excited about the opportunity to build a career in financial services.',
-    submittedAt: '2024-03-23T16:45:00',
-    status: 'contacted',
-    resumeName: null,
-    resumeData: null
-  },
-  {
-    id: 'app-004',
-    firstName: 'Sarah',
-    lastName: 'Martinez',
-    email: 'sarah.martinez@email.com',
-    phone: '(770) 555-0189',
-    experience: '5+',
-    licensed: 'yes',
-    message: 'Senior sales professional with 8 years in financial services. Looking for a company with strong values and growth opportunities. I have a proven track record of exceeding targets.',
-    submittedAt: '2024-03-22T11:20:00',
-    status: 'interview',
-    resumeName: 'sarah_martinez_resume.pdf',
-    resumeData: null
-  }
-];
+// Job Applications (start fresh)
+export const applications = [];
 
 // Application storage functions (in a real app, this would be API calls)
 let applicationsStore = [...applications];
